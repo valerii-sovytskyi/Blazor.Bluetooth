@@ -2,7 +2,7 @@
 
 @inherits Helpers.BindableBase
 
-<h3>Blazor bluetooth web api</h3>
+<h3>Blazor Web Bluetooth API tester</h3>
 
 <div>
 
@@ -24,14 +24,14 @@
                     </label>
                     <InputText class="form-control" @bind-Value="DeviceFilter.DeviceName" />
                 </div>
-            
+
                 <div class="form-group">
                     <label>
                         Device name prefix:
                     </label>
                     <InputText class="form-control" @bind-Value="DeviceFilter.DeviceNamePrefix" />
                 </div>
-            
+
                 <div class="form-group">
                     <label>
                         Service UUID:
@@ -61,5 +61,34 @@
                     <b>Device id:</b> @Device.Id
                 </label>
             </div>
-        </div>}
+            <div class="form-group">
+                <label>
+                    <b>Is device connected:</b> @Device.Gatt.Connected
+                </label>
+            </div>
+            @if (Device.Gatt.Connected)
+            {
+                <div class="form-group">
+                    <button class="btn-danger" type="button" @onclick="DisconnectDevice">Disconnect the device</button>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <button class="btn-primary" type="button" @onclick="ConnectDevice">Connect the device</button>
+                </div>
+            }
+        </div>
+    }
+
+
+<div class="border border-warning">
+    @foreach (var item in Logs)
+    {
+        <label>
+            @item
+        </label>
+        <br/>
+    }
+</div>
 </div>

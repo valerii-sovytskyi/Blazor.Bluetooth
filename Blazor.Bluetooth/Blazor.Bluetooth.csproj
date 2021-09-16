@@ -1,12 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>Valerii Sovytskyi</Authors>
+		<Description>Blazor Web Bluetooth API for server and client.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
+		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
+		<PackageReleaseNotes>Supported all the implementation for Web Bluetooth API</PackageReleaseNotes>
+		<Version>1.0.1</Version>
+		<PackageIcon>BlazorBluetooth.png</PackageIcon>
+		<PackageIconUrl />
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.9" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\BlazorBluetooth.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
 
 </Project>

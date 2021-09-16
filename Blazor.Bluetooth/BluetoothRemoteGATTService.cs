@@ -8,19 +8,19 @@ namespace Blazor.Bluetooth
 {
     internal class BluetoothRemoteGATTService : IBluetoothRemoteGATTService
     {
-        #region Intenal fields
+        #region Internal fields
 
-        public string IntenalDeviceUuid { get; set; }
-        public string IntenalUuid { get; set; }
-        public bool IntenalIsPrimary { get; set; }
+        public string InternalDeviceUuid { get; set; }
+        public string InternalUuid { get; set; }
+        public bool InternalIsPrimary { get; set; }
 
         #endregion
 
         #region Public fields
 
-        public string DeviceUuid => IntenalDeviceUuid;
-        public string Uuid => IntenalUuid;
-        public bool IsPrimary => IntenalIsPrimary;
+        public string DeviceUuid => InternalDeviceUuid;
+        public string Uuid => InternalUuid;
+        public bool IsPrimary => InternalIsPrimary;
 
         #endregion
 
