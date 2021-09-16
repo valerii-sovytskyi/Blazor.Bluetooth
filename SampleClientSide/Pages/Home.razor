@@ -1,0 +1,65 @@
+﻿@page "/"
+
+@inherits Helpers.BindableBase
+
+<h3>Blazor bluetooth web api</h3>
+
+<div>
+
+    <EditForm OnValidSubmit="RequestDevice" Model="DeviceFilter">
+
+        <div class="form-group">
+            <label>
+                Allow all devices:
+            </label>
+            <InputCheckbox class="form-control" @bind-Value="DeviceFilter.AllowAllDevices" />
+        </div>
+
+        @if (!DeviceFilter.AllowAllDevices)
+        {
+            <div>
+                <div class="form-group">
+                    <label>
+                        Device name:
+                    </label>
+                    <InputText class="form-control" @bind-Value="DeviceFilter.DeviceName" />
+                </div>
+            
+                <div class="form-group">
+                    <label>
+                        Device name prefix:
+                    </label>
+                    <InputText class="form-control" @bind-Value="DeviceFilter.DeviceNamePrefix" />
+                </div>
+            
+                <div class="form-group">
+                    <label>
+                        Service UUID:
+                    </label>
+                    <InputText class="form-control" @bind-Value="DeviceFilter.ServiceUuid" />
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <button class="btn-primary" type="submit">Init</button>
+        </div>
+
+    </EditForm>
+
+
+    @if (Device != null)
+    {
+        <div class="border border-success">
+            <div class="form-group">
+                <label>
+                    <b>Device name:</b> @Device.Name
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <b>Device id:</b> @Device.Id
+                </label>
+            </div>
+        </div>}
+</div>
