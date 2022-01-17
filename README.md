@@ -6,7 +6,7 @@ Works both **Client-side** and **Server-side**.
 
 ## Getting Started
 
-1. Add Nuget package [Blazor.Bluetooth](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.0)
+1. Add Nuget package [Blazor.Bluetooth](https://www.nuget.org/packages/Blazor.Bluetooth)
 2. In Program.cs add ```builder.Services.AddBluetoothNavigator();```
 3. In your **wwwrooot/index.html** add ```<script src="_content/Blazor.Bluetooth/JSInterop.js"></script>```
 4. In the component you want to connect to a device add the Blazor.Bluetooth Namespace ```@using Blazor.Bluetooth``` or add it to your ```_Imports.razor```
