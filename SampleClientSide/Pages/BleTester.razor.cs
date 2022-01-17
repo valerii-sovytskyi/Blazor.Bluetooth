@@ -20,6 +20,13 @@ namespace SampleClientSide.Pages
             set => SetProperty(ref _device, value);
         }
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         public ObservableCollection<string> Logs { get; set; } = new ObservableCollection<string>
         {
             "Logs:"
@@ -27,6 +34,8 @@ namespace SampleClientSide.Pages
 
         public async Task RequestDevice()
         {
+            IsBusy = true;
+
             try
             {
                 Device = null;
@@ -58,10 +67,14 @@ namespace SampleClientSide.Pages
             {
                 Logs.Add($"Exception: {ex.Message}");
             }
+
+            IsBusy = false;
         }
 
         public async Task ConnectDevice()
         {
+            IsBusy = true;
+
             try
             {
                 await Device.Gatt.Connect();
@@ -71,10 +84,14 @@ namespace SampleClientSide.Pages
             {
                 Logs.Add($"Exception: {ex.Message}");
             }
+
+            IsBusy = false;
         }
 
         public async Task DisconnectDevice()
         {
+            IsBusy = true;
+
             try
             {
                 await Device.Gatt.Disonnect();
@@ -84,6 +101,25 @@ namespace SampleClientSide.Pages
             {
                 Logs.Add($"Exception: {ex.Message}");
             }
+
+            IsBusy = false;
+        }
+
+        public async Task UpdateIsConnected()
+        {
+            IsBusy = true;
+
+            try
+            {
+                await Device.Gatt.GetConnected();
+                StateHasChanged();
+            }
+            catch (System.Exception ex)
+            {
+                Logs.Add($"Exception: {ex.Message}");
+            }
+
+            IsBusy = false;
         }
     }
 

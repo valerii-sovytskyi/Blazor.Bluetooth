@@ -63,3 +63,11 @@ _Note: do not forget to unsubscribe from the event and call StopNotifications._
 ### Others
 
 I didn't describe all the functionality, some of them I didn't have possibility to test so there could be some issues and I would like to hear from you a feedback to make this nuget fully work.
+
+
+### Release notes
+
+- [1.0.2](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.2)
+1. IBluetoothRemoteGATTServer has a new implementation to GetConnected
+ 
+_Why? It means you will check if device connected on runtime. Because the property Connect will be updated only by your actions Connect/Disconnect/GetConnected, so we need to actually check if Connected still connected to device, this method can help. Consider of using this method instead. One more think, we have a bug related to after Connect we not always connected successfully, but Connect is true, but after some time, we receive exceptions as device is disconnected. Consider to connect to device, wait some time, up to 1 sec I guess, then check if you are connected by calling Connect method. I didn't implement this functionality inside Blazor.Bluetooth, because this is only a mirror for real web bluetooth, so this is not a part of real lib._

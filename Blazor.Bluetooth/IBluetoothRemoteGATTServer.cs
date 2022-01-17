@@ -43,5 +43,11 @@ namespace Blazor.Bluetooth
         /// <param name="uuid">A Bluetooth service universally unique identifier for a specified device.</param>
         /// <returns>Task with list of <see cref="IBluetoothRemoteGATTService"/> result.</returns>
         Task<List<IBluetoothRemoteGATTService>> GetPrimaryServices(string uuid);
+
+        /// <summary>
+        /// Get current device and check Connected property, made to check the state in runtime, because Connected property is actually setting by Connect/Disconnect/GetConnected only.
+        /// </summary>
+        /// <returns>Task with is connected result.</returns>
+        Task<bool> GetConnected();
     }
 }

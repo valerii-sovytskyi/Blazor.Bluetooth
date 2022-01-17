@@ -78,6 +78,13 @@ namespace Blazor.Bluetooth
             }
         }
 
+        public async Task<bool> GetConnected()
+        {
+            var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.getCurrentDevice");
+            InternalConnected = currentDevice.Gatt.Connected;
+            return InternalConnected;
+        }
+
         #endregion
     }
 }

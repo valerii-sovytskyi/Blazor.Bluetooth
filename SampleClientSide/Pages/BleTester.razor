@@ -42,7 +42,7 @@
         }
 
         <div class="form-group">
-            <button class="btn-primary" type="submit">Init</button>
+            <button class="btn-primary" disabled="@IsBusy" type="submit">Request device</button>
         </div>
 
     </EditForm>
@@ -66,29 +66,34 @@
                     <b>Is device connected:</b> @Device.Gatt.Connected
                 </label>
             </div>
+
+            <div class="form-group">
+                <button class="btn-outline-secondary" disabled="@IsBusy" @onclick="UpdateIsConnected">Update Connected state</button>
+            </div>
+
             @if (Device.Gatt.Connected)
             {
                 <div class="form-group">
-                    <button class="btn-danger" type="button" @onclick="DisconnectDevice">Disconnect the device</button>
+                    <button class="btn-danger" disabled="@IsBusy" type="button" @onclick="DisconnectDevice">Disconnect the device</button>
                 </div>
             }
             else
             {
                 <div class="form-group">
-                    <button class="btn-primary" type="button" @onclick="ConnectDevice">Connect the device</button>
+                    <button class="btn-primary" disabled="@IsBusy" type="button" @onclick="ConnectDevice">Connect the device</button>
                 </div>
             }
         </div>
     }
 
 
-<div class="border border-warning">
-    @foreach (var item in Logs)
-    {
-        <label>
-            @item
-        </label>
-        <br/>
-    }
-</div>
+    <div class="border border-warning">
+        @foreach (var item in Logs)
+        {
+            <label>
+                @item
+            </label>
+            <br />
+        }
+    </div>
 </div>
