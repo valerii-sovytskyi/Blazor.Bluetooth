@@ -6,47 +6,49 @@
 
 <div>
 
-    <EditForm OnValidSubmit="RequestDevice" Model="DeviceFilter">
+    @if (Device == null || !Device.Gatt.Connected)
+    {
+        <EditForm OnValidSubmit="RequestDevice" Model="DeviceFilter">
 
-        <div class="form-group">
-            <label>
-                Allow all devices:
-            </label>
-            <InputCheckbox class="form-control" @bind-Value="DeviceFilter.AllowAllDevices" />
-        </div>
-
-        @if (!DeviceFilter.AllowAllDevices)
-        {
-            <div>
-                <div class="form-group">
-                    <label>
-                        Device name:
-                    </label>
-                    <InputText class="form-control" @bind-Value="DeviceFilter.DeviceName" />
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Device name prefix:
-                    </label>
-                    <InputText class="form-control" @bind-Value="DeviceFilter.DeviceNamePrefix" />
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Service UUID:
-                    </label>
-                    <InputText class="form-control" @bind-Value="DeviceFilter.ServiceUuid" />
-                </div>
+            <div class="form-group">
+                <label>
+                    Allow all devices:
+                </label>
+                <InputCheckbox class="form-control" @bind-Value="DeviceFilter.AllowAllDevices" />
             </div>
-        }
 
-        <div class="form-group">
-            <button class="btn-primary" disabled="@IsBusy" type="submit">Request device</button>
-        </div>
+            @if (!DeviceFilter.AllowAllDevices)
+            {
+                <div>
+                    <div class="form-group">
+                        <label>
+                            Device name:
+                        </label>
+                        <InputText class="form-control" @bind-Value="DeviceFilter.DeviceName" />
+                    </div>
 
-    </EditForm>
+                    <div class="form-group">
+                        <label>
+                            Device name prefix:
+                        </label>
+                        <InputText class="form-control" @bind-Value="DeviceFilter.DeviceNamePrefix" />
+                    </div>
 
+                    <div class="form-group">
+                        <label>
+                            Service UUID:
+                        </label>
+                        <InputText class="form-control" @bind-Value="DeviceFilter.ServiceUuid" />
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <button class="btn-primary" disabled="@IsBusy" type="submit">Request device</button>
+            </div>
+
+        </EditForm>
+    }
 
     @if (Device != null)
     {

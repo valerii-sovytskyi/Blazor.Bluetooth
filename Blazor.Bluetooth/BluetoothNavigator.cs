@@ -1,9 +1,9 @@
 ﻿using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Blazor.Bluetooth
 {
@@ -108,12 +108,12 @@ namespace Blazor.Bluetooth
 
         public async Task<IDevice> RequestDevice(RequestDeviceQuery query)
         {
-            var jsonSettings = new JsonSerializerSettings
+            var jsonOptions = new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
             };
 
-            string json = JsonConvert.SerializeObject(query, Formatting.None, jsonSettings);
+            var json = JsonSerializer.Serialize(query, jsonOptions);
 
             try
             {
@@ -122,6 +122,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("User cancelled the requestDevice() chooser."))
+                {
+                    throw new RequestDeviceCancelledException(ex.Message, ex);
+                }
+
                 throw new Exception(ex.Message);
             }
         }

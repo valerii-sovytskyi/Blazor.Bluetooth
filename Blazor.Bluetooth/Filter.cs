@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Blazor.Bluetooth
 {
@@ -13,24 +13,19 @@ namespace Blazor.Bluetooth
         /// <summary>
         /// Gets or sets service objects. For example those types possible: 'heart_rate', 0x1802, 0x1803, 'c48e6067-5295-48d3-8d5c-0395f61792b1'.
         /// </summary>
-        [JsonProperty(propertyName: "services")]
-        public List<object> Services { get; set; } = new List<object>();
+        [JsonPropertyName("services")]
+        public List<object> Services { get; set; }
 
         /// <summary>
         /// Gets or sets Name of a device.
         /// </summary>
-        [JsonProperty(propertyName: "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets Prefix name.
         /// </summary>
-        [JsonProperty(propertyName: "namePrefix")]
+        [JsonPropertyName("namePrefix")]
         public string NamePrefix { get; set; }
-
-        public bool ShouldSerializeServices()
-        {
-            return Services.Count > 0;
-        }
     }
 }

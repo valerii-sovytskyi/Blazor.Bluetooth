@@ -243,6 +243,16 @@ window.ble.getCurrentDevice = () => {
     }
 }
 
+window.ble.connectCurrentDevice = async() => {
+    var device = window.ble.currentDevice;
+    await device.gatt.connect();
+}
+
+window.ble.disconnectCurrentDevice = async () => {
+    var device = window.ble.currentDevice;
+    await device.gatt.disconnect();
+}
+
 window.ble.referringDevice = () => {
 
     var device = navigator.bluetooth.referringDevice;
@@ -257,6 +267,13 @@ window.ble.referringDevice = () => {
 window.ble.requestDevice = async (query) => {
     var objquery = JSON.parse(query);
     var device = await navigator.bluetooth.requestDevice(objquery);
+
+    var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
+    if (alreadyPariedDevice != null) {
+        var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
+        PairedBluetoothDevices.splice(indexToRemove, 1);
+    }
+
     PairedBluetoothDevices.push(device);
     window.ble.currentDevice = device;
 

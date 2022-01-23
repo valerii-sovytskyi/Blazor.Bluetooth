@@ -1,6 +1,7 @@
 ﻿using Blazor.Bluetooth;
 using Microsoft.AspNetCore.Components;
 using SampleClientSide.Helpers;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -44,15 +45,18 @@ namespace SampleClientSide.Pages
 
                 if (!DeviceFilter.AllowAllDevices)
                 {
-                    query.Filters.Add(new Filter
+                    query.Filters = new List<Filter>
                     {
-                        Name = string.IsNullOrWhiteSpace(DeviceFilter.DeviceName)
-                            ? null
-                            : DeviceFilter.DeviceName,
-                        NamePrefix = string.IsNullOrWhiteSpace(DeviceFilter.DeviceNamePrefix)
-                            ? null
-                            : DeviceFilter.DeviceNamePrefix,
-                    });
+                        new Filter
+                        {
+                            Name = string.IsNullOrWhiteSpace(DeviceFilter.DeviceName)
+                                ? null
+                                : DeviceFilter.DeviceName,
+                            NamePrefix = string.IsNullOrWhiteSpace(DeviceFilter.DeviceNamePrefix)
+                                ? null
+                                : DeviceFilter.DeviceNamePrefix,
+                        }
+                    };
                 }
 
                 if (!string.IsNullOrEmpty(DeviceFilter.ServiceUuid))
@@ -100,6 +104,11 @@ namespace SampleClientSide.Pages
             catch (System.Exception ex)
             {
                 Logs.Add($"Exception: {ex.Message}");
+            }
+
+            if (!await Device.Gatt.GetConnected())
+            {
+                Device = null;
             }
 
             IsBusy = false;

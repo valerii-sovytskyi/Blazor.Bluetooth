@@ -28,7 +28,7 @@ namespace Blazor.Bluetooth
         {
             try
             {
-                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.currentDevice.gatt.connect");
+                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.connectCurrentDevice");
                 var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.getCurrentDevice");
                 InternalConnected = currentDevice.Gatt.Connected;
             }
@@ -42,7 +42,7 @@ namespace Blazor.Bluetooth
         {
             try
             {
-                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.currentDevice.gatt.disconnect");
+                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.disconnectCurrentDevice");
                 var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.getCurrentDevice");
                 InternalConnected = currentDevice.Gatt.Connected;
             }

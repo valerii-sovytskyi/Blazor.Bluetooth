@@ -71,3 +71,12 @@ I didn't describe all the functionality, some of them I didn't have possibility 
 1. IBluetoothRemoteGATTServer has a new implementation to GetConnected
  
 _Why? It means you will check if device connected on runtime. Because the property Connect will be updated only by your actions Connect/Disconnect/GetConnected, so we need to actually check if Connected still connected to device, this method can help. Consider of using this method instead. One more think, we have a bug related to after Connect we not always connected successfully, but Connect is true, but after some time, we receive exceptions as device is disconnected. Consider to connect to device, wait some time, up to 1 sec I guess, then check if you are connected by calling Connect method. I didn't implement this functionality inside Blazor.Bluetooth, because this is only a mirror for real web bluetooth, so this is not a part of real lib._
+
+- [1.0.3](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.3)
+1. Added RequestDeviceCancelledException - by handling this exception user can just inore it, as it indicate, user clicked on cancel button.
+2. Removed Newtonsoft.Json as we can use System.Text.Json
+3. Filter.Services / RequestDeviceQuery.Filters / RequestDeviceQuery.OptionalServices are null by default, and removed useless methods ShouldSerialize_.
+
+- [1.0.4](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.4)
+1. Fixed issue if user try to connect to one device, then disconnect, then try to connect to another device.
+2. Fixed issue with Paired bluetooth devices list, it cause issue if you trying to talk to device if you reconnected to the same device.
