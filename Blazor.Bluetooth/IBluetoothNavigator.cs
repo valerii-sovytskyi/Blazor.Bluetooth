@@ -37,6 +37,7 @@ namespace Blazor.Bluetooth
         /// </summary>
         /// <param name="query">A filter query.</param>
         /// <returns>Task with a device result.</returns>
+        /// <exception cref="RequestDeviceCancelledException">Exception thrown in case user cancel connecting to the device.</exception>
         Task<IDevice> RequestDevice(RequestDeviceQuery query);
     }
 }

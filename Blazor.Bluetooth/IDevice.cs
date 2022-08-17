@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Blazor.Bluetooth
 {
@@ -23,5 +24,17 @@ namespace Blazor.Bluetooth
         /// On GATT server disconnected event represent disconnection from the device.
         /// </summary>
         event Action OnGattServerDisconnected;
+
+        /// <summary>
+        /// On advertisement received event.
+        /// </summary>
+        event Action<IBluetoothAdvertisingEvent> OnAdvertisementReceived;
+
+        /// <summary>
+        /// Activate receiving advertisements from the device.
+        /// Advertisements will stop receiving once you connect to the device.
+        /// </summary>
+        /// <exception cref="AdvertisementsUnavailableException">Will throw in case of Experimental mode inactive.</exception>
+        Task WatchAdvertisements();
     }
 }

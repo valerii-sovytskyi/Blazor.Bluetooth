@@ -27,28 +27,23 @@ namespace Blazor.Bluetooth
         #region Public fields
 
         private event Action _onAvailabilityChanged;
+
         public event Action OnAvailabilityChanged
         {
             add
             {
-                Task.Run(async () =>
+                if (BluetoothAvailabilityHandler is null)
                 {
-                    if (BluetoothAvailabilityHandler is null)
-                    {
-                        BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
-                    }
+                    BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
+                }
 
-                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
-                });
+                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
 
                 _onAvailabilityChanged += value;
             }
             remove
             {
-                Task.Run(async () =>
-                {
-                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
-                });
+                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
 
                 _onAvailabilityChanged -= value;
             }

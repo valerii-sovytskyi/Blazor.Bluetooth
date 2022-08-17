@@ -23,6 +23,45 @@ async function getCharacteristic(deviceId, serviceId, characteristicId) {
 // End Helpers
 
 
+// Device
+
+function convertBluetoothAdvertisingEvent(event) {
+    return {
+        "InternalAppearance": event.appearance,
+        "InternalDevice": event.device,
+        "InternalManufacturerData": event.manufacturer_data,
+        "InternalName": event.name,
+        "InternalRssi": event.rssi,
+        "InternalServiceData": event.service_data,
+        "InternalTxPower": event.tx_power,
+        "InternalUuids": event.uuids,
+    }
+}
+
+var AdvertisementReceivedHandler = [];
+
+window.ble.setAdvertisementReceivedHandler = (advertisementReceivedHandler) => {
+
+    AdvertisementReceivedHandler = advertisementReceivedHandler;
+}
+
+window.ble.watchAdvertisements = async (deviceId) => {
+    var device = getPairedBluetoothDeviceById(deviceId);
+
+    device.addEventListener('advertisementreceived', handleAdvertisementReceived);
+    device.watchAdvertisements();
+}
+
+async function handleAdvertisementReceived(event) {
+    if (AdvertisementReceivedHandler != null) {
+        var convertedEvent = convertBluetoothAdvertisingEvent(event);
+        await AdvertisementReceivedHandler.invokeMethodAsync('HandleAdvertisementReceived', convertedEvent);
+    }
+}
+
+// End Device
+
+
 // Service
 
 function convertPrimaryService(service, deviceId) {

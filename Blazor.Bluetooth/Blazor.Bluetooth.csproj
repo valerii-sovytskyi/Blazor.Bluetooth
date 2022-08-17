@@ -8,7 +8,7 @@
 		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
 		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
 		<PackageReleaseNotes>1.Fix reconnection to another device. 2.Fix getting exact paired device.</PackageReleaseNotes>
-		<Version>1.0.4</Version>
+		<Version>1.0.5</Version>
 		<PackageIcon>BlazorBluetooth.png</PackageIcon>
 		<PackageIconUrl />
 		<PackageReadmeFile>README.md</PackageReadmeFile>

@@ -18,6 +18,7 @@ But right now let's see what we can do here
 ## How to use
 
 ### Bluetooth
+
 First of all you can check if user's browser support Bluetooth connection by calling **IBluetoothNavigator.GetAvailability**
 
 ### Request a device
@@ -64,8 +65,7 @@ _Note: do not forget to unsubscribe from the event and call StopNotifications._
 
 I didn't describe all the functionality, some of them I didn't have possibility to test so there could be some issues and I would like to hear from you a feedback to make this nuget fully work.
 
-
-### Release notes
+## Release notes
 
 - [1.0.2](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.2)
 1. IBluetoothRemoteGATTServer has a new implementation to GetConnected
@@ -80,3 +80,11 @@ _Why? It means you will check if device connected on runtime. Because the proper
 - [1.0.4](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.4)
 1. Fixed issue if user try to connect to one device, then disconnect, then try to connect to another device.
 2. Fixed issue with Paired bluetooth devices list, it cause issue if you trying to talk to device if you reconnected to the same device.
+
+- [1.0.5](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.5)
+1. Added Watch advertisements to the IDevice
+2. Updated tests, also uploaded tester so you can test your device without prepearing IDE.
+3. Fixed all event subscribtions to run synchronously, because it was run method faster then event was subscribet inside JSInteropt.js.
+
+## Additional
+[Blazor.Bluetooth Web tester](https://blazorbluetooth.azurewebsites.net/)

@@ -28,6 +28,27 @@ namespace SampleClientSide.Pages
             set => SetProperty(ref _isBusy, value);
         }
 
+        private bool _advertisementsFeatureDissabled;
+        public bool AdvertisementsFeatureDissabled
+        {
+            get => _advertisementsFeatureDissabled;
+            set => SetProperty(ref _advertisementsFeatureDissabled, value);
+        }
+
+        private IBluetoothAdvertisingEvent _bluetoothAdvertisingEvent;
+        public IBluetoothAdvertisingEvent BluetoothAdvertisingEvent
+        {
+            get => _bluetoothAdvertisingEvent;
+            set => SetProperty(ref _bluetoothAdvertisingEvent, value);
+        }
+
+        private bool _advertisementsReceiveActivated;
+        public bool AdvertisementsReceiveActivated
+        {
+            get => _advertisementsReceiveActivated;
+            set => SetProperty(ref _advertisementsReceiveActivated, value);
+        }
+
         public ObservableCollection<string> Logs { get; set; } = new ObservableCollection<string>
         {
             "Logs:"
@@ -36,6 +57,8 @@ namespace SampleClientSide.Pages
         public async Task RequestDevice()
         {
             IsBusy = true;
+            AdvertisementsReceiveActivated = false;
+            BluetoothAdvertisingEvent = null;
 
             try
             {
@@ -65,7 +88,11 @@ namespace SampleClientSide.Pages
                 }
 
                 Device = await BluetoothNavigator.RequestDevice(query);
-
+            }
+            catch (AdvertisementsUnavailableException ex)
+            {
+                AdvertisementsFeatureDissabled = true;
+                Logs.Add($"AdvertisementsUnavailableException: {ex.Message}");
             }
             catch (System.Exception ex)
             {
@@ -75,9 +102,17 @@ namespace SampleClientSide.Pages
             IsBusy = false;
         }
 
+        private void Device_OnAdvertisementReceived(IBluetoothAdvertisingEvent bluetoothAdvertisingEvent)
+        {
+            BluetoothAdvertisingEvent = bluetoothAdvertisingEvent;
+            Device.OnAdvertisementReceived -= Device_OnAdvertisementReceived;
+        }
+
         public async Task ConnectDevice()
         {
             IsBusy = true;
+            AdvertisementsReceiveActivated = false;
+            BluetoothAdvertisingEvent = null;
 
             try
             {
@@ -95,6 +130,8 @@ namespace SampleClientSide.Pages
         public async Task DisconnectDevice()
         {
             IsBusy = true;
+            AdvertisementsReceiveActivated = false;
+            BluetoothAdvertisingEvent = null;
 
             try
             {
@@ -129,6 +166,13 @@ namespace SampleClientSide.Pages
             }
 
             IsBusy = false;
+        }
+
+        private async Task StartReceivingAdvertisements()
+        {
+            Device.OnAdvertisementReceived += Device_OnAdvertisementReceived;
+            await Device.WatchAdvertisements();
+            AdvertisementsReceiveActivated = true;
         }
     }
 

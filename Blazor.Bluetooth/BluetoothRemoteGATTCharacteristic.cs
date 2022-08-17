@@ -37,24 +37,18 @@ namespace Blazor.Bluetooth
         {
             add
             {
-                Task.Run(async () =>
+                if (_characteristicValueHandler == null)
                 {
-                    if (_characteristicValueHandler == null)
-                    {
-                        _characteristicValueHandler = DotNetObjectReference.Create(new CharacteristicValueHandler(this));
-                    }
+                    _characteristicValueHandler = DotNetObjectReference.Create(new CharacteristicValueHandler(this));
+                }
 
-                    await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setCharacteristicValueChangedHandler", _characteristicValueHandler);
-                });
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setCharacteristicValueChangedHandler", _characteristicValueHandler);
 
                 _onRaiseCharacteristicValueChanged += value;
             }
             remove
             {
-                Task.Run(async () =>
-                {
-                    await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setCharacteristicValueChangedHandler", null);
-                });
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setCharacteristicValueChangedHandler", null);
 
                 _onRaiseCharacteristicValueChanged -= value;
             }

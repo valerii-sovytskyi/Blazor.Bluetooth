@@ -12,6 +12,7 @@ namespace Blazor.Bluetooth
         #region Private fields
 
         private DotNetObjectReference<DeviceDisconnectHandler> DeviceDisconnectHandler;
+        private DotNetObjectReference<AdvertisementReceivedHandler> AdvertisementReceivedHandler;
 
         #endregion
 
@@ -38,26 +39,63 @@ namespace Blazor.Bluetooth
         {
             add
             {
-                Task.Run(async () =>
+                if (DeviceDisconnectHandler is null)
                 {
-                    if (DeviceDisconnectHandler is null)
-                    {
-                        DeviceDisconnectHandler = DotNetObjectReference.Create(new DeviceDisconnectHandler(this));
-                    }
+                    DeviceDisconnectHandler = DotNetObjectReference.Create(new DeviceDisconnectHandler(this));
+                }
 
-                    await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.addDeviceDisconnectionHandler", DeviceDisconnectHandler, Id);
-                });
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.addDeviceDisconnectionHandler", DeviceDisconnectHandler, Id);
 
                 _onGattServerDisconnected += value;
             }
             remove
             {
-                Task.Run(async () =>
-                {
-                    await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.addDeviceDisconnectionHandler", null, Id);
-                });
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.addDeviceDisconnectionHandler", null, Id);
 
                 _onGattServerDisconnected -= value;
+            }
+        }
+
+        private event Action<IBluetoothAdvertisingEvent> _onAdvertisementReceived;
+        public event Action<IBluetoothAdvertisingEvent> OnAdvertisementReceived
+        {
+            add
+            {
+                if (AdvertisementReceivedHandler is null)
+                {
+                    AdvertisementReceivedHandler = DotNetObjectReference.Create(new AdvertisementReceivedHandler(this));
+                }
+
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setAdvertisementReceivedHandler", AdvertisementReceivedHandler, Id);
+
+                _onAdvertisementReceived += value;
+            }
+            remove
+            {
+                BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setAdvertisementReceivedHandler", null, Id);
+
+                _onAdvertisementReceived -= value;
+            }
+        }
+
+        #endregion
+
+        #region Public methods
+
+        public async Task WatchAdvertisements()
+        {
+            try
+            {
+                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.watchAdvertisements", InternalId);
+            }
+            catch (JSException ex)
+            {
+                if (ex.Message.Contains("device.watchAdvertisements is not a function"))
+                {
+                    throw new AdvertisementsUnavailableException(ex);
+                }
+
+                throw new Exception(ex.Message);
             }
         }
 
@@ -68,6 +106,11 @@ namespace Blazor.Bluetooth
         internal void RaiseOnGattServerDisconnected()
         {
             _onGattServerDisconnected?.Invoke();
+        }
+
+        internal void RaiseAdvertisementReceived(BluetoothAdvertisingEvent bluetoothAdvertisingEvent)
+        {
+            _onAdvertisementReceived?.Invoke(bluetoothAdvertisingEvent);
         }
 
         #endregion
