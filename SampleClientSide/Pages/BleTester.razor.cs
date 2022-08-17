@@ -88,11 +88,8 @@ namespace SampleClientSide.Pages
                 }
 
                 Device = await BluetoothNavigator.RequestDevice(query);
-            }
-            catch (AdvertisementsUnavailableException ex)
-            {
-                AdvertisementsFeatureDissabled = true;
-                Logs.Add($"AdvertisementsUnavailableException: {ex.Message}");
+
+                await StartReceivingAdvertisements();
             }
             catch (System.Exception ex)
             {
@@ -170,9 +167,17 @@ namespace SampleClientSide.Pages
 
         private async Task StartReceivingAdvertisements()
         {
-            Device.OnAdvertisementReceived += Device_OnAdvertisementReceived;
-            await Device.WatchAdvertisements();
-            AdvertisementsReceiveActivated = true;
+            try
+            {
+                Device.OnAdvertisementReceived += Device_OnAdvertisementReceived;
+                await Device.WatchAdvertisements();
+                AdvertisementsReceiveActivated = true;
+            }
+            catch (AdvertisementsUnavailableException ex)
+            {
+                AdvertisementsFeatureDissabled = true;
+                Logs.Add($"AdvertisementsUnavailableException: {ex.Message}");
+            }
         }
     }
 

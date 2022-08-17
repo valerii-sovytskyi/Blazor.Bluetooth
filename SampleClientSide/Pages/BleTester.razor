@@ -48,7 +48,10 @@
             }
         }
     }
-
+    else if (AdvertisementsReceiveActivated)
+    {
+        <p>Advertisements scanning....</p>
+    }
 
     @if (Device == null || !Device.Gatt.Connected)
     {

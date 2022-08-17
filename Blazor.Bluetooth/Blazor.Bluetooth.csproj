@@ -7,8 +7,12 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
 		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
-		<PackageReleaseNotes>1.Fix reconnection to another device. 2.Fix getting exact paired device.</PackageReleaseNotes>
-		<Version>1.0.5</Version>
+		<PackageReleaseNotes>
+      1. Added Watch advertisements to the IDevice
+      2. Updated tests, also uploaded tester so you can test your device without prepearing IDE.
+      3. Fixed all event subscribtions to run synchronously, because it was run method faster then event was subscribet inside JSInteropt.js.
+    </PackageReleaseNotes>
+		<Version>1.0.5.1</Version>
 		<PackageIcon>BlazorBluetooth.png</PackageIcon>
 		<PackageIconUrl />
 		<PackageReadmeFile>README.md</PackageReadmeFile>
