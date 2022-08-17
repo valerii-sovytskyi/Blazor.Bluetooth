@@ -2,7 +2,7 @@
 
 namespace Blazor.Bluetooth
 {
-    internal class BluetoothServiceDataMap : Dictionary<object, byte[]>, IBluetoothServiceDataMap
+    internal class BluetoothServiceDataMap : Dictionary<string, byte[]>, IBluetoothServiceDataMap
     {
     }
 }
