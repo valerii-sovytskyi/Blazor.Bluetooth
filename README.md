@@ -87,4 +87,6 @@ _Why? It means you will check if device connected on runtime. Because the proper
 3. Fixed all event subscribtions to run synchronously, because it was run method faster then event was subscribet inside JSInteropt.js.
 
 ## Additional
-[Blazor.Bluetooth Web tester](https://blazorbluetooth.azurewebsites.net/)
+
+- Some features are working only with Experimental feature activated, for example input this reference into your browser (chrome/edge) **about:flags/#enable-web-bluetooth-new-permissions-backend** and enable it. Or more general option **about:flags/#enable-experimental-web-platform-features**.
+- Try [Blazor.Bluetooth Web tester](https://blazorbluetooth.azurewebsites.net/), so you do not have to run the code

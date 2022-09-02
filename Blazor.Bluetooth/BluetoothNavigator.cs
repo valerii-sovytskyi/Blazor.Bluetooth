@@ -71,6 +71,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("navigator.bluetooth is undefined"))
+                {
+                    throw new BluetoothNotSupportedException(ex);
+                }
+
                 throw new Exception(ex.Message);
             }
         }
@@ -84,6 +89,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("navigator.bluetooth is undefined"))
+                {
+                    throw new BluetoothNotSupportedException(ex);
+                }
+
                 throw new Exception(ex.Message);
             }
         }
@@ -97,6 +107,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("navigator.bluetooth is undefined"))
+                {
+                    throw new BluetoothNotSupportedException(ex);
+                }
+
                 throw new Exception(ex.Message);
             }
         }
@@ -117,6 +132,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("navigator.bluetooth is undefined"))
+                {
+                    throw new BluetoothNotSupportedException(ex);
+                }
+
                 if (ex.Message.Contains("User cancelled the requestDevice() chooser."))
                 {
                     throw new RequestDeviceCancelledException(ex.Message, ex);

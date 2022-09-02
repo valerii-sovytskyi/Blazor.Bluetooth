@@ -7,8 +7,7 @@ namespace Blazor.Bluetooth
         private const string ExceptionMessage =
             "Advertisements unavailable.\n" +
             "Because of this feature in experimental mode, please make sure you enable it in your browser!\n" +
-            "For chrome copy this ref to your browser chrome://flags/#enable-experimental-web-platform-features\n" +
-            "For edge copy this ref to your browser edge://flags/#enable-experimental-web-platform-features\n";
+            "For chrome/edge about:flags/#enable-web-bluetooth-new-permissions-backend\n";
 
         public AdvertisementsUnavailableException(Exception inner)
             : base(ExceptionMessage, inner)

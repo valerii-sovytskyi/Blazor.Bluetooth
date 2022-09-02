@@ -62,6 +62,12 @@ namespace SampleClientSide.Pages
 
             try
             {
+                var isBleAvailable = await BluetoothNavigator.GetAvailability();
+                if (!isBleAvailable)
+                {
+                    Logs.Add($"The BLE is not available on your browser");
+                }
+
                 Device = null;
 
                 var query = new RequestDeviceQuery { AcceptAllDevices = DeviceFilter.AllowAllDevices };

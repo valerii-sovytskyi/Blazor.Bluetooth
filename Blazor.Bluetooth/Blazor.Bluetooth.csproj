@@ -8,11 +8,11 @@
 		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
 		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
 		<PackageReleaseNotes>
-      1. Added Watch advertisements to the IDevice
-      2. Updated tests, also uploaded tester so you can test your device without prepearing IDE.
-      3. Fixed all event subscribtions to run synchronously, because it was run method faster then event was subscribet inside JSInteropt.js.
+      1. Added BluetoothNotSupportedException.
+			2. Updated browser tester.
+			3. Changed exception message for AdvertisementsUnavailableException.
     </PackageReleaseNotes>
-		<Version>1.0.5.1</Version>
+		<Version>1.0.5.2</Version>
 		<PackageIcon>BlazorBluetooth.png</PackageIcon>
 		<PackageIconUrl />
 		<PackageReadmeFile>README.md</PackageReadmeFile>

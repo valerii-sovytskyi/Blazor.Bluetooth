@@ -47,9 +47,10 @@ window.ble.setAdvertisementReceivedHandler = (advertisementReceivedHandler) => {
 
 window.ble.watchAdvertisements = async (deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
-
-    device.addEventListener('advertisementreceived', handleAdvertisementReceived);
-    device.watchAdvertisements();
+    if (!device.watchingAdvertisements) {
+        device.addEventListener('advertisementreceived', handleAdvertisementReceived);
+        device.watchAdvertisements();
+    }
 }
 
 async function handleAdvertisementReceived(event) {

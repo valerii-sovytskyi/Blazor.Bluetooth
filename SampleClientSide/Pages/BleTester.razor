@@ -8,10 +8,9 @@
 
     @if (AdvertisementsFeatureDissabled)
     {
-        <p>Please make sure to Enable Experimental Web Platform feature for bluetooth to have advertisements!</p>
-        <p>(Copy relevant to your browser ref to search field)</p>
-        <p>chrome://flags/#enable-experimental-web-platform-features</p>
-        <p>edge://flags/#enable-experimental-web-platform-features</p>
+        <p>Please make sure to enable "Web BLE new permissions backend" feature for bluetooth to have advertisements!</p>
+        <p>(Copy ref to search field)</p>
+        <p>about:flags/#enable-web-bluetooth-new-permissions-backend</p>
     }
 
     @if (BluetoothAdvertisingEvent != null)
