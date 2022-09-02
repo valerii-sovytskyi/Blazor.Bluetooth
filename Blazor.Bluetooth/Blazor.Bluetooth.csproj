@@ -8,11 +8,9 @@
 		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
 		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
 		<PackageReleaseNotes>
-      1. Added BluetoothNotSupportedException.
-			2. Updated browser tester.
-			3. Changed exception message for AdvertisementsUnavailableException.
+      1. Added exception message in case if developer forget to add script into index.html file.
     </PackageReleaseNotes>
-		<Version>1.0.5.2</Version>
+		<Version>1.0.5.3</Version>
 		<PackageIcon>BlazorBluetooth.png</PackageIcon>
 		<PackageIconUrl />
 		<PackageReadmeFile>README.md</PackageReadmeFile>
