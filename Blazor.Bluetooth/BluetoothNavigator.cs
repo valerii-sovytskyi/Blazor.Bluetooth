@@ -71,6 +71,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("'ble' was undefined"))
+                {
+                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                }
+
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
                 {
                     throw new BluetoothNotSupportedException(ex);
@@ -89,6 +94,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("'ble' was undefined"))
+                {
+                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                }
+
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
                 {
                     throw new BluetoothNotSupportedException(ex);
@@ -107,6 +117,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("'ble' was undefined"))
+                {
+                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                }
+
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
                 {
                     throw new BluetoothNotSupportedException(ex);
@@ -132,6 +147,11 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
+                if (ex.Message.Contains("'ble' was undefined"))
+                {
+                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                }
+                
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
                 {
                     throw new BluetoothNotSupportedException(ex);
