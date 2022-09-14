@@ -1,35 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFrameworks>net5.0</TargetFrameworks>
-		<Authors>Valerii Sovytskyi</Authors>
-		<Description>Blazor Web Bluetooth API for server and client.</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
-		<PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
-		<PackageReleaseNotes>
-      1. Added exception message in case if developer forget to add script into index.html file.
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <Authors>Valerii Sovytskyi</Authors>
+    <Description>Blazor Web Bluetooth API for server and client.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
+    <PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
+    <PackageReleaseNotes>
+      1. Supported .net5/.net6
+      2. Changed exception if no script found.
     </PackageReleaseNotes>
-		<Version>1.0.5.3</Version>
-		<PackageIcon>BlazorBluetooth.png</PackageIcon>
-		<PackageIconUrl />
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
+    <Version>1.0.5.4</Version>
+    <PackageIcon>BlazorBluetoothUA.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
+  <!--  NET 5  -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" Condition="'$(TargetFramework)' == 'net5.0'" />
-	</ItemGroup>
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\BlazorBluetooth.png">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
-		<None Include="..\README.md">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
+  <!--  NET 6  -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\BlazorBluetooth.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\BlazorBluetoothUA.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

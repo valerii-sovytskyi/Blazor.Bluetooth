@@ -73,7 +73,7 @@ namespace Blazor.Bluetooth
             {
                 if (ex.Message.Contains("'ble' was undefined"))
                 {
-                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                    throw new ScriptNotFoundException(ex);
                 }
 
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
@@ -96,7 +96,7 @@ namespace Blazor.Bluetooth
             {
                 if (ex.Message.Contains("'ble' was undefined"))
                 {
-                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                    throw new ScriptNotFoundException(ex);
                 }
 
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
@@ -119,7 +119,7 @@ namespace Blazor.Bluetooth
             {
                 if (ex.Message.Contains("'ble' was undefined"))
                 {
-                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                    throw new ScriptNotFoundException(ex);
                 }
 
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
@@ -149,7 +149,7 @@ namespace Blazor.Bluetooth
             {
                 if (ex.Message.Contains("'ble' was undefined"))
                 {
-                    throw new Exception("Please check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html", ex);
+                    throw new ScriptNotFoundException(ex);
                 }
                 
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
