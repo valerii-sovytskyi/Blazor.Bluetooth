@@ -32,18 +32,28 @@ namespace Blazor.Bluetooth
         {
             add
             {
-                if (BluetoothAvailabilityHandler is null)
+                // INFO: this should be covered in Task.Run,
+                // because script not found on Blazor Server App, if you run JsRuntime.InvokeVoidAsync directly.
+                // for Blazor Client App both ways wroks.
+                // ISSUE: https://github.com/valerii-sovytskyi/Blazor.Bluetooth/issues/1
+                Task.Run(async () =>
                 {
-                    BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
-                }
+                    if (BluetoothAvailabilityHandler is null)
+                    {
+                        BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
+                    }
 
-                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
+                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
+                });
 
                 _onAvailabilityChanged += value;
             }
             remove
             {
-                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
+                Task.Run(async () =>
+                {
+                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
+                });
 
                 _onAvailabilityChanged -= value;
             }

@@ -8,10 +8,9 @@
     <RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
     <PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
     <PackageReleaseNotes>
-      1. Supported .net5/.net6
-      2. Changed exception if no script found.
+      1. Fixed critical issue #1 to this library on Blazor Server App.
     </PackageReleaseNotes>
-    <Version>1.0.5.4</Version>
+    <Version>1.0.5.5</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>

@@ -11,9 +11,7 @@ Works both **Client-side** and **Server-side**.
 3. Add JSInterop.js to the project
 
 - For the **Client**: In your **wwwrooot/index.html** add ```<script src="_content/Blazor.Bluetooth/JSInterop.js"></script>```
-- For the **Server**: Add the script below script into _Host.cshtml for .**net5** and _Layout.cshtml for **.net6** 
-    
-    ```<script src="https://blazorbluetooth.azurewebsites.net/_content/Blazor.Bluetooth/JSInterop.js"></script>```
+- For the **Server**: In your _Host.cshtml for .**net5** and _Layout.cshtml for **.net6** add ```<script src="_content/Blazor.Bluetooth/JSInterop.js"></script>```
 
 4. In the component you want to connect to a device add the Blazor.Bluetooth Namespace ```@using Blazor.Bluetooth``` or add it to your ```_Imports.razor```
 5. Inject the **IBluetoothNavigator** (the instance that will communicate with your device) ```@inject IBluetoothNavigator navigator```
@@ -92,7 +90,10 @@ _Why? It means you will check if device connected on runtime. Because the proper
 2. Updated tests, also uploaded tester so you can test your device without prepearing IDE.
 3. Fixed all event subscribtions to run synchronously, because it was run method faster then event was subscribet inside JSInteropt.js.
 
-## Additional
+- [1.0.5.5](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.5.5)
+1. Fixed critical issue #1 to this library on Blazor Server App.
+
+## Additionaly
 
 - Some features are working only with Experimental feature activated, for example input this reference into your browser (chrome/edge) **about:flags/#enable-web-bluetooth-new-permissions-backend** and enable it. Or more general option **about:flags/#enable-experimental-web-platform-features**.
 - Try [Blazor.Bluetooth Web tester](https://blazorbluetooth.azurewebsites.net/), so you do not have to run the code
