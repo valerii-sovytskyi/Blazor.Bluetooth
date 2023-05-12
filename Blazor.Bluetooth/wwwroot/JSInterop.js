@@ -290,9 +290,9 @@ window.ble.connectCurrentDevice = async () => {
 
 window.ble.connectDevice = async (deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
-    await device.gatt.connect();
 
     if (device !== null) {
+        await device.gatt.connect();
         return convertDevice(device);
     }
     else {
@@ -307,9 +307,9 @@ window.ble.disconnectCurrentDevice = async () => {
 
 window.ble.disconnectDevice = async (deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
-    await device.gatt.disconnect();
 
     if (device !== null) {
+        await device.gatt.disconnect();
         return convertDevice(device);
     }
     else {
