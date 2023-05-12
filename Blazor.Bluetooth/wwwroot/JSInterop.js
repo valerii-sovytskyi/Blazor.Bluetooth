@@ -359,6 +359,12 @@ window.ble.getDevices = async () => {
         var devices = await navigator.bluetooth.getDevices();
 
         devices.forEach((device) => {
+            var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
+            if (alreadyPariedDevice != null) {
+                var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
+                PairedBluetoothDevices.splice(indexToRemove, 1);
+            }
+
             PairedBluetoothDevices.push(device);
         });
 
