@@ -283,14 +283,38 @@ window.ble.getCurrentDevice = () => {
     }
 }
 
-window.ble.connectCurrentDevice = async() => {
+window.ble.connectCurrentDevice = async () => {
     var device = window.ble.currentDevice;
     await device.gatt.connect();
+}
+
+window.ble.connectDevice = async (deviceId) => {
+    var device = getPairedBluetoothDeviceById(deviceId);
+
+    if (device !== null) {
+        await device.gatt.connect();
+        return convertDevice(device);
+    }
+    else {
+        return null;
+    }
 }
 
 window.ble.disconnectCurrentDevice = async () => {
     var device = window.ble.currentDevice;
     await device.gatt.disconnect();
+}
+
+window.ble.disconnectDevice = async (deviceId) => {
+    var device = getPairedBluetoothDeviceById(deviceId);
+
+    if (device !== null) {
+        await device.gatt.disconnect();
+        return convertDevice(device);
+    }
+    else {
+        return null;
+    }
 }
 
 window.ble.referringDevice = () => {
@@ -333,6 +357,17 @@ window.ble.getDevices = async () => {
         throw 'Get devices is not supporting';
     } else {
         var devices = await navigator.bluetooth.getDevices();
+
+        devices.forEach((device) => {
+            var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
+            if (alreadyPariedDevice != null) {
+                var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
+                PairedBluetoothDevices.splice(indexToRemove, 1);
+            }
+
+            PairedBluetoothDevices.push(device);
+        });
+
         return devices.map(x => convertDevice(x));
     }
 }
@@ -379,7 +414,7 @@ async function onAvailabilityChanged() {
 }
 
 window.ble.addBluetoothAvailabilityHandler = (bluetoothAvailabilityHandler) => {
-    
+
     if (bluetoothAvailabilityHandler !== null) {
 
         BluetoothAvailabilityHandler = bluetoothAvailabilityHandler;
