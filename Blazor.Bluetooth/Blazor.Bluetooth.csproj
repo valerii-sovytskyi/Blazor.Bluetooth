@@ -8,9 +8,10 @@
     <RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
     <PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
     <PackageReleaseNotes>
-      1. Fixed critical issue #1 to this library on Blazor Server App.
+      1. Fixed issue with connecting only for Current device instead of connecting directly by the device ID
+      2. Updated sample for testing bluetooth.getAvailability and bluetooth.getDevices.
     </PackageReleaseNotes>
-    <Version>1.0.5.5</Version>
+    <Version>1.0.5.6</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
