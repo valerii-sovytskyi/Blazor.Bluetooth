@@ -52,8 +52,76 @@
         <p>Advertisements scanning....</p>
     }
 
-    @if (Device == null || !Device.Gatt.Connected)
+    @if (RequestedDevices.Any())
     {
+        <ul class="list-group">
+            @foreach (var device in RequestedDevices)
+            {
+
+                <li class="list-group-item @(device.Gatt.Connected ? "active" : "")">
+                    <div>
+                        | @device.Name | @device.Id | @device.Gatt.Connected | <button type="button" @onclick="() => { IsBusy = true; device.Gatt.Disonnect(); IsBusy = false; StateHasChanged(); }"></button>
+                    </div>
+
+                </li>
+            }
+        </ul>
+    }
+
+    @if (CurrentDevice == null || !CurrentDevice.Gatt.Connected)
+    {
+
+        <div class="form-group">
+            <button class="btn btn-outline-primary" @onclick="OnGetAvailabilityClicked" disabled="@IsBusy" type="button">Get availability of bluetooth adapter</button>
+
+            @if (IsAvailable.HasValue)
+            {
+                <p>@(IsAvailable.Value ? "Bluetooth adapter available" : "Bluetooth adapter is not available")</p>
+            }
+        </div>
+
+        <!--  Get devices-->
+        <div class="form-group">
+            <button class="btn btn-outline-primary" @onclick="OnGetDeviceClicked" disabled="@IsBusy" type="button">Get devices</button>
+
+            @if (GotDevices.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Id</th>
+                            <th scope="col">Gatt.DeviceUuid</th>
+                            <th scope="col">Gatt.Connected</th>
+                            <th scope="col">Try to connect</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < GotDevices.Count; i++)
+                        {
+                            var device = GotDevices[i];
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td>@device.Name</td>
+                                <td>@device.Id</td>
+                                <td>@device.Gatt.DeviceUuid</td>
+                                <td>@device.Gatt.Connected</td>
+                                <td><button class="btn btn-outline-secondary" @onclick="() => ConnectDevice(device)" disabled="@IsBusy" type="button">Connect</button></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No devices got yet</p>
+            }
+
+        </div>
+
+
         <EditForm OnValidSubmit="RequestDevice" Model="DeviceFilter">
 
             <div class="form-group">
@@ -90,52 +158,57 @@
             }
 
             <div class="form-group">
-                <button class="btn-primary" disabled="@IsBusy" type="submit">Request device</button>
+                <button class="btn btn-primary" disabled="@IsBusy" type="submit">Request device</button>
             </div>
 
         </EditForm>
     }
 
-    @if (Device != null)
+    @if (CurrentDevice != null)
     {
         @if (!AdvertisementsReceiveActivated)
         {
-            <button type="button" @onclick="StartReceivingAdvertisements">Start watching advertisements</button>
+            <div class="form-group">
+                <button type="button" @onclick="StartReceivingAdvertisements">Start watching advertisements</button>
+            </div>
         }
 
-        <div class="border border-success">
-            <div class="form-group">
-                <label>
-                    <b>Device name:</b> @Device.Name
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <b>Device id:</b> @Device.Id
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <b>Is device connected:</b> @Device.Gatt.Connected
-                </label>
-            </div>
 
-            <div class="form-group">
-                <button class="btn-outline-secondary" disabled="@IsBusy" @onclick="UpdateIsConnected">Update Connected state</button>
-            </div>
+        <div class="form-group">
+            <div class="border border-success">
+                <div class="form-group">
+                    <label>
+                        <b>Device name:</b> @CurrentDevice.Name
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <b>Device id:</b> @CurrentDevice.Id
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <b>Is device connected:</b> @CurrentDevice.Gatt.Connected
+                    </label>
+                </div>
 
-            @if (Device.Gatt.Connected)
-            {
                 <div class="form-group">
-                    <button class="btn-danger" disabled="@IsBusy" type="button" @onclick="DisconnectDevice">Disconnect the device</button>
+                    <button class="btn btn-outline-secondary" disabled="@IsBusy" @onclick="UpdateIsConnected">Update Connected state</button>
                 </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <button class="btn-primary" disabled="@IsBusy" type="button" @onclick="ConnectDevice">Connect the device</button>
-                </div>
-            }
+
+                @if (CurrentDevice.Gatt.Connected)
+                {
+                    <div class="form-group">
+                        <button class="btn btn-danger" disabled="@IsBusy" type="button" @onclick="DisconnectDevice">Disconnect the device</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <button class="btn btn-primary" disabled="@IsBusy" type="button" @onclick="() => ConnectDevice(CurrentDevice)">Connect the device</button>
+                    </div>
+                }
+            </div>
         </div>
     }
 

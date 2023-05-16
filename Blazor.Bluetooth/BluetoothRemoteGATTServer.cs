@@ -28,8 +28,8 @@ namespace Blazor.Bluetooth
         {
             try
             {
-                var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.connectDevice", InternalDeviceUuid);
-                InternalConnected = currentDevice.Gatt.Connected;
+                var device = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.connectDevice", InternalDeviceUuid);
+                InternalConnected = device.Gatt.Connected;
             }
             catch (JSException ex)
             {
@@ -41,8 +41,8 @@ namespace Blazor.Bluetooth
         {
             try
             {
-                var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.disconnectDevice", InternalDeviceUuid);
-                InternalConnected = currentDevice.Gatt.Connected;
+                var device = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.disconnectDevice", InternalDeviceUuid);
+                InternalConnected = device.Gatt.Connected;
             }
             catch (JSException ex)
             {
@@ -78,9 +78,16 @@ namespace Blazor.Bluetooth
 
         public async Task<bool> GetConnected()
         {
-            var currentDevice = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.getCurrentDevice");
-            InternalConnected = currentDevice.Gatt.Connected;
-            return InternalConnected;
+            try
+            {
+                var device = await BluetoothNavigator.JsRuntime.InvokeAsync<Device>("ble.getDeviceById", DeviceUuid);
+                InternalConnected = device.Gatt.Connected;
+                return InternalConnected;
+            }
+            catch (JSException ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         #endregion

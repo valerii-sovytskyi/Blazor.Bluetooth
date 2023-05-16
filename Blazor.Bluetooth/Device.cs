@@ -90,7 +90,7 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
-                if (ex.Message.Contains("device.watchAdvertisements is not a function"))
+                if (ex.Message.Contains("watchAdvertisements is not a function"))
                 {
                     throw new AdvertisementsUnavailableException(ex);
                 }

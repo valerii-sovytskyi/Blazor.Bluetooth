@@ -271,21 +271,8 @@ function convertDevice(device) {
     };
 }
 
-window.ble.currentDevice = {}
-
-window.ble.getCurrentDevice = () => {
-    var device = window.ble.currentDevice;
-    if (device !== null) {
-        return convertDevice(device);
-    }
-    else {
-        return null;
-    }
-}
-
-window.ble.connectCurrentDevice = async () => {
-    var device = window.ble.currentDevice;
-    await device.gatt.connect();
+window.ble.getDeviceById = (deviceId) => {
+    return convertDevice(getPairedBluetoothDeviceById(deviceId));
 }
 
 window.ble.connectDevice = async (deviceId) => {
@@ -298,11 +285,6 @@ window.ble.connectDevice = async (deviceId) => {
     else {
         return null;
     }
-}
-
-window.ble.disconnectCurrentDevice = async () => {
-    var device = window.ble.currentDevice;
-    await device.gatt.disconnect();
 }
 
 window.ble.disconnectDevice = async (deviceId) => {
@@ -339,13 +321,12 @@ window.ble.requestDevice = async (query) => {
     }
 
     PairedBluetoothDevices.push(device);
-    window.ble.currentDevice = device;
 
     if (device !== null) {
         console.log('> Bluetooth Device selected.');
     }
 
-    return await window.ble.getCurrentDevice();
+    return window.ble.getDeviceById(device.id);
 }
 
 window.ble.getAvailability = async () => {

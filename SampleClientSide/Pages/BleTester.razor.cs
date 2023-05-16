@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using SampleClientSide.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SampleClientSide.Pages
@@ -12,13 +13,17 @@ namespace SampleClientSide.Pages
         [Inject]
         public IBluetoothNavigator BluetoothNavigator { get; set; }
 
+        public List<IDevice> RequestedDevices { get; set; } = new List<IDevice>();
+
+        public List<IDevice> GotDevices { get; set; } = new List<IDevice>();
+
         public DeviceFilter DeviceFilter { get; set; } = new DeviceFilter();
 
-        private IDevice _device;
-        public IDevice Device
+        private IDevice _currentdevice;
+        public IDevice CurrentDevice
         {
-            get => _device;
-            set => SetProperty(ref _device, value);
+            get => _currentdevice;
+            set => SetProperty(ref _currentdevice, value);
         }
 
         private bool _isBusy;
@@ -68,7 +73,7 @@ namespace SampleClientSide.Pages
                     Logs.Add($"The BLE is not available on your browser");
                 }
 
-                Device = null;
+                CurrentDevice = null;
 
                 var query = new RequestDeviceQuery { AcceptAllDevices = DeviceFilter.AllowAllDevices };
 
@@ -93,9 +98,12 @@ namespace SampleClientSide.Pages
                     query.OptionalServices.Add(DeviceFilter.ServiceUuid);
                 }
 
-                Device = await BluetoothNavigator.RequestDevice(query);
+                CurrentDevice = await BluetoothNavigator.RequestDevice(query);
 
-                await StartReceivingAdvertisements();
+                if (RequestedDevices.Any(x => x.Id != CurrentDevice.Id))
+                {
+                    RequestedDevices.Add(CurrentDevice);
+                }
             }
             catch (System.Exception ex)
             {
@@ -108,10 +116,10 @@ namespace SampleClientSide.Pages
         private void Device_OnAdvertisementReceived(IBluetoothAdvertisingEvent bluetoothAdvertisingEvent)
         {
             BluetoothAdvertisingEvent = bluetoothAdvertisingEvent;
-            Device.OnAdvertisementReceived -= Device_OnAdvertisementReceived;
+            CurrentDevice.OnAdvertisementReceived -= Device_OnAdvertisementReceived;
         }
 
-        public async Task ConnectDevice()
+        public async Task ConnectDevice(IDevice device)
         {
             IsBusy = true;
             AdvertisementsReceiveActivated = false;
@@ -119,7 +127,9 @@ namespace SampleClientSide.Pages
 
             try
             {
-                await Device.Gatt.Connect();
+                await device.Gatt.Connect();
+
+                CurrentDevice = device;
                 StateHasChanged();
             }
             catch (System.Exception ex)
@@ -138,7 +148,7 @@ namespace SampleClientSide.Pages
 
             try
             {
-                await Device.Gatt.Disonnect();
+                await CurrentDevice.Gatt.Disonnect();
                 StateHasChanged();
             }
             catch (System.Exception ex)
@@ -146,9 +156,9 @@ namespace SampleClientSide.Pages
                 Logs.Add($"Exception: {ex.Message}");
             }
 
-            if (!await Device.Gatt.GetConnected())
+            if (!await CurrentDevice.Gatt.GetConnected())
             {
-                Device = null;
+                CurrentDevice = null;
             }
 
             IsBusy = false;
@@ -160,7 +170,7 @@ namespace SampleClientSide.Pages
 
             try
             {
-                await Device.Gatt.GetConnected();
+                await CurrentDevice.Gatt.GetConnected();
                 StateHasChanged();
             }
             catch (System.Exception ex)
@@ -171,12 +181,52 @@ namespace SampleClientSide.Pages
             IsBusy = false;
         }
 
+        public async Task OnGetDeviceClicked()
+        {
+            try
+            {
+                GotDevices.Clear();
+                var devices = await BluetoothNavigator.GetDevices();
+                if (devices != null)
+                {
+                    GotDevices.AddRange(devices);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Logs.Add($"Exception: {ex.Message}");
+            }
+        }
+
+        public bool? IsAvailable { get; set; }
+
+        public async Task OnGetAvailabilityClicked()
+        {
+            try
+            {
+                IsAvailable = null;
+                Logs.Add($"Subscribing to OnAvailabilityChanged event");
+                BluetoothNavigator.OnAvailabilityChanged -= BluetoothNavigator_OnAvailabilityChanged;
+                BluetoothNavigator.OnAvailabilityChanged += BluetoothNavigator_OnAvailabilityChanged;
+                IsAvailable = await BluetoothNavigator.GetAvailability();
+            }
+            catch (System.Exception ex)
+            {
+                Logs.Add($"Exception: {ex.Message}");
+            }
+        }
+
+        private void BluetoothNavigator_OnAvailabilityChanged()
+        {
+            Logs.Add($"BluetoothNavigator_OnAvailabilityChanged called");
+        }
+
         private async Task StartReceivingAdvertisements()
         {
             try
             {
-                Device.OnAdvertisementReceived += Device_OnAdvertisementReceived;
-                await Device.WatchAdvertisements();
+                CurrentDevice.OnAdvertisementReceived += Device_OnAdvertisementReceived;
+                await CurrentDevice.WatchAdvertisements();
                 AdvertisementsReceiveActivated = true;
             }
             catch (AdvertisementsUnavailableException ex)

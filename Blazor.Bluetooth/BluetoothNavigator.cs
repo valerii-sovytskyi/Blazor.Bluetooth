@@ -34,7 +34,7 @@ namespace Blazor.Bluetooth
             {
                 // INFO: this should be covered in Task.Run,
                 // because script not found on Blazor Server App, if you run JsRuntime.InvokeVoidAsync directly.
-                // for Blazor Client App both ways wroks.
+                // for Blazor Client App both ways work.
                 // ISSUE: https://github.com/valerii-sovytskyi/Blazor.Bluetooth/issues/1
                 Task.Run(async () =>
                 {
