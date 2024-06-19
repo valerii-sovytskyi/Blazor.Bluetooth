@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net8.0</TargetFrameworks>
     <Authors>Valerii Sovytskyi</Authors>
     <Description>Blazor Web Bluetooth API for server and client.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -30,6 +30,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
   </ItemGroup>
+
+	<!--  NET 8  -->
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.3" Condition="'$(TargetFramework)' == 'net8.0'" />
+		<PackageReference Include="System.Net.Http.Json" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+	</ItemGroup>
 
   <ItemGroup>
     <None Include="..\BlazorBluetooth.png">
