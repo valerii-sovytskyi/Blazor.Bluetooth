@@ -92,16 +92,16 @@ window.ble.getPrimaryServices = async (serviceId, deviceId) => {
 
 function convertCharacteristic(characteristic, deviceId, serviceId) {
     return {
-        "Properties": {
-            "InternalAuthenticatedSignedWrites": characteristic.authenticatedSignedWrites,
-            "InternalBroadcast": characteristic.broadcast,
-            "InternalIndicate": characteristic.indicate,
-            "InternalNotify": characteristic.notify,
-            "InternalRead": characteristic.read,
-            "InternalReliableWrite": characteristic.reliableWrite,
-            "InternalWritableAuxiliaries": characteristic.writableAuxiliaries,
-            "InternalWrite": characteristic.write,
-            "InternalWriteWithoutResponse": characteristic.writeWithoutResponse,
+        "InternalProperties": {
+            "InternalAuthenticatedSignedWrites": characteristic.properties.authenticatedSignedWrites,
+            "InternalBroadcast": characteristic.properties.broadcast,
+            "InternalIndicate": characteristic.properties.indicate,
+            "InternalNotify": characteristic.properties.notify,
+            "InternalRead": characteristic.properties.read,
+            "InternalReliableWrite": characteristic.properties.reliableWrite,
+            "InternalWritableAuxiliaries": characteristic.properties.writableAuxiliaries,
+            "InternalWrite": characteristic.properties.write,
+            "InternalWriteWithoutResponse": characteristic.properties.writeWithoutResponse,
         },
         "InternalUuid": characteristic.uuid,
         "InternalValue": characteristic.value,
