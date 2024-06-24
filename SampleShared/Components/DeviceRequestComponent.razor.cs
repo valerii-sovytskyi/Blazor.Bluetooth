@@ -96,6 +96,28 @@ public partial class DeviceRequestComponent : BindableBase
         StateHasChanged();
     }
 
+    private void AddManufacturerData()
+    {
+        if (Options.OptionalManufacturerData is null)
+        {
+            Options.OptionalManufacturerData = new List<ManufacturerData>();
+        }
+
+        Options.OptionalManufacturerData.Add(new ManufacturerData());
+        StateHasChanged();
+    }
+    
+    private void RemoveManufacturerData(ManufacturerData manufacturerData)
+    {
+        Options.OptionalManufacturerData.Remove(manufacturerData);
+        if (Options.OptionalManufacturerData.Count == 0)
+        {
+            Options.OptionalManufacturerData = null;
+        }
+
+        StateHasChanged();
+    }
+    
     private void AddManufacturerData(Filter filter)
     {
         if (filter.ManufacturerData is null)
@@ -117,7 +139,34 @@ public partial class DeviceRequestComponent : BindableBase
 
         StateHasChanged();
     }
+
+    private void AddService()
+    {
+        if (Options.OptionalServices is null)
+        {
+            Options.OptionalServices = new List<string>();
+        }
+
+        Options.OptionalServices.Add(string.Empty);
+        StateHasChanged();
+    }
     
+    private void RemoveService(int index)
+    {
+        Options.OptionalServices.RemoveAt(index);
+        if (Options.OptionalServices.Count == 0)
+        {
+            Options.OptionalServices = null;
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnServiceTextChanged(int serviceIndex, object arg)
+    {
+        Options.OptionalServices[serviceIndex] = arg.ToString();
+    }
+
     private void AddService(Filter filter)
     {
         if (filter.Services is null)

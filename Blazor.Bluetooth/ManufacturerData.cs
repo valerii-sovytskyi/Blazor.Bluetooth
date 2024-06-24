@@ -13,10 +13,11 @@ namespace Blazor.Bluetooth
         /// with assigned hex number 0x000C, you would specify 12.
         /// </summary>
         [JsonPropertyName("companyIdentifier")]
-        public int? CompanyIdentifier { get; set; } = null;
+        public int CompanyIdentifier { get; set; }
         
         /// <summary>
         /// Gets or sets a data prefix.
+        /// Optional.
         /// 
         /// The data prefix.
         /// A buffer containing values to match against the values at the start
@@ -27,6 +28,7 @@ namespace Blazor.Bluetooth
         
         /// <summary>
         /// Gets or sets a mask.
+        /// Optional.
         ///
         /// This allows you to match against bytes within the manufacturer data,
         /// by masking some bytes of the service data dataPrefix.
