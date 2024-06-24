@@ -25,7 +25,7 @@ async function getCharacteristic(deviceId, serviceId, characteristicId) {
 
 // Device
 
-function convertBluetoothAdvertisingEvent(event) {
+function convertBluetoothAdvertisingEventToInternal(event) {
     return {
         "InternalAppearance": event.appearance,
         "InternalDevice": event.device,
@@ -55,7 +55,7 @@ window.ble.watchAdvertisements = async (deviceId) => {
 
 async function handleAdvertisementReceived(event) {
     if (AdvertisementReceivedHandler != null) {
-        var convertedEvent = convertBluetoothAdvertisingEvent(event);
+        var convertedEvent = convertBluetoothAdvertisingEventToInternal(event);
         await AdvertisementReceivedHandler.invokeMethodAsync('HandleAdvertisementReceived', convertedEvent);
     }
 }
@@ -65,7 +65,7 @@ async function handleAdvertisementReceived(event) {
 
 // Service
 
-function convertPrimaryService(service, deviceId) {
+function convertPrimaryServiceToInternal(service, deviceId) {
     return {
         "InternalIsPrimary": service.isPrimary,
         "InternalUuid": service.uuid,
@@ -76,13 +76,13 @@ function convertPrimaryService(service, deviceId) {
 window.ble.getPrimaryService = async (serviceId, deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
     var primaryService = await device.gatt.getPrimaryService(serviceId);
-    return convertPrimaryService(primaryService, deviceId)
+    return convertPrimaryServiceToInternal(primaryService, deviceId)
 }
 
 window.ble.getPrimaryServices = async (serviceId, deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
     var primaryServices = await device.gatt.getPrimaryServices(serviceId);
-    return primaryServices.map(x => convertPrimaryService(x, deviceId));
+    return primaryServices.map(x => convertPrimaryServiceToInternal(x, deviceId));
 }
 
 // End Service
@@ -90,7 +90,7 @@ window.ble.getPrimaryServices = async (serviceId, deviceId) => {
 
 // Characteristic
 
-function convertCharacteristic(characteristic, deviceId, serviceId) {
+function convertCharacteristicToInternal(characteristic, deviceId, serviceId) {
     return {
         "InternalProperties": {
             "InternalAuthenticatedSignedWrites": characteristic.properties.authenticatedSignedWrites,
@@ -113,14 +113,14 @@ function convertCharacteristic(characteristic, deviceId, serviceId) {
 window.ble.getCharacteristic = async (serviceId, characteristicId, deviceId) => {
 
     var characteristic = await getCharacteristic(deviceId, serviceId, characteristicId);
-    return convertCharacteristic(characteristic, deviceId, serviceId)
+    return convertCharacteristicToInternal(characteristic, deviceId, serviceId)
 }
 
 window.ble.getCharacteristics = async (serviceId, characteristicId, deviceId) => {
     var device = getPairedBluetoothDeviceById(deviceId);
     var service = await device.gatt.getPrimaryService(serviceId);
     var characteristics = await service.getCharacteristics(characteristicId);
-    return characteristics.map(x => convertCharacteristic(x, deviceId, serviceId));
+    return characteristics.map(x => convertCharacteristicToInternal(x, deviceId, serviceId));
 }
 
 // End Characteristic
@@ -128,7 +128,7 @@ window.ble.getCharacteristics = async (serviceId, characteristicId, deviceId) =>
 
 // Descriptors
 
-function convertDescriptor(descriptor, characteristicId, deviceId, serviceId) {
+function convertDescriptorToInternal(descriptor, characteristicId, deviceId, serviceId) {
     return {
         "InternalUuid": descriptor.uuid,
         "InternalValue": descriptor.value,
@@ -142,14 +142,14 @@ window.ble.getDescriptor = async (descriptorId, serviceId, characteristicId, dev
 
     var characteristic = await getCharacteristic(deviceId, serviceId, characteristicId);
     var descriptor = await characteristic.getDescriptor(descriptorId);
-    return convertDescriptor(descriptor, characteristicId, deviceId, serviceId);
+    return convertDescriptorToInternal(descriptor, characteristicId, deviceId, serviceId);
 }
 
 window.ble.getDescriptors = async (descriptorId, serviceId, characteristicId, deviceId) => {
 
     var characteristic = await getCharacteristic(deviceId, serviceId, characteristicId);
     var descriptors = await characteristic.getDescriptors(descriptorId);
-    return descriptors.map(x => convertDescriptor(x, characteristicId, deviceId, serviceId));
+    return descriptors.map(x => convertDescriptorToInternal(x, characteristicId, deviceId, serviceId));
 }
 
 // End Descriptors
@@ -260,7 +260,7 @@ window.ble.descriptorWriteValue = async (deviceId, serviceId, characteristicId, 
 
 // Bluetooth
 
-function convertDevice(device) {
+function convertDeviceToInternal(device) {
     return {
         "InternalName": device.name,
         "InternalId": device.id,
@@ -272,7 +272,7 @@ function convertDevice(device) {
 }
 
 window.ble.getDeviceById = (deviceId) => {
-    return convertDevice(getPairedBluetoothDeviceById(deviceId));
+    return convertDeviceToInternal(getPairedBluetoothDeviceById(deviceId));
 }
 
 window.ble.connectDevice = async (deviceId) => {
@@ -280,7 +280,7 @@ window.ble.connectDevice = async (deviceId) => {
 
     if (device !== null) {
         await device.gatt.connect();
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
     else {
         return null;
@@ -292,7 +292,7 @@ window.ble.disconnectDevice = async (deviceId) => {
 
     if (device !== null) {
         await device.gatt.disconnect();
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
     else {
         return null;
@@ -306,13 +306,31 @@ window.ble.referringDevice = () => {
         throw 'Referring device is not supporting';
     }
     else {
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
 }
 
-window.ble.requestDevice = async (query) => {
-    var objquery = JSON.parse(query);
-    var device = await navigator.bluetooth.requestDevice(objquery);
+window.ble.requestDevice = async (options) => {
+    var objOptions = JSON.parse(options);
+    var device = await navigator.bluetooth.requestDevice(objOptions);
+
+    var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
+    if (alreadyPariedDevice != null) {
+        var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
+        PairedBluetoothDevices.splice(indexToRemove, 1);
+    }
+
+    PairedBluetoothDevices.push(device);
+
+    if (device !== null) {
+        console.log('> Bluetooth Device selected.');
+    }
+
+    return window.ble.getDeviceById(device.id);
+}
+
+window.ble.requestDevice = async () => {
+    var device = await navigator.bluetooth.requestDevice();
 
     var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
     if (alreadyPariedDevice != null) {
@@ -349,7 +367,7 @@ window.ble.getDevices = async () => {
             PairedBluetoothDevices.push(device);
         });
 
-        return devices.map(x => convertDevice(x));
+        return devices.map(x => convertDeviceToInternal(x));
     }
 }
 

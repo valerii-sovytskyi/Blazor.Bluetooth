@@ -140,15 +140,43 @@ namespace Blazor.Bluetooth
                 throw new Exception(ex.Message);
             }
         }
+        
+        public async Task<IDevice> RequestDevice()
+        {
+            try
+            {
+                var device = await JsRuntime.InvokeAsync<Device>("ble.requestDevice");
+                return device;
+            }
+            catch (JSException ex)
+            {
+                if (ex.Message.Contains("'ble' was undefined"))
+                {
+                    throw new ScriptNotFoundException(ex);
+                }
+                
+                if (ex.Message.Contains("navigator.bluetooth is undefined"))
+                {
+                    throw new BluetoothNotSupportedException(ex);
+                }
 
-        public async Task<IDevice> RequestDevice(RequestDeviceQuery query)
+                if (ex.Message.Contains("User cancelled the requestDevice() chooser."))
+                {
+                    throw new RequestDeviceCancelledException(ex.Message, ex);
+                }
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IDevice> RequestDevice(RequestDeviceOptions options)
         {
             var jsonOptions = new JsonSerializerOptions
             {
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             };
 
-            var json = JsonSerializer.Serialize(query, jsonOptions);
+            var json = JsonSerializer.Serialize(options, jsonOptions);
 
             try
             {

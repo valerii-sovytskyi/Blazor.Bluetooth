@@ -27,12 +27,14 @@ First of all you can check if user's browser support Bluetooth connection by cal
 
 ### Request a device
 
-Create a **RequestDeviceQuery** with all the options you would like to get a device. But note that it's important if **AcceptAllDevices** is **true**, then do not set **Filters**, other ways you have to fill **Filters**.
+Create a **RequestDeviceOptions** with all the options you would like to get a device. But note that it's important if **AcceptAllDevices** is **true**, then do not set **Filters**, other ways you have to fill **Filters**.
 
 ```
-var query = new RequestDeviceQuery { AcceptAllDevices = true };
-var device = await BluetoothNavigator.RequestDevice(query);
+var options = new RequestDeviceOptions { AcceptAllDevices = true };
+var device = await BluetoothNavigator.RequestDevice(options);
 ```
+
+_Note: see full info about requests here [Request Device Options](https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options)_
 
 ### Connect/Disconnect to the device
 
@@ -96,6 +98,13 @@ _Why? It means you will check if device connected on runtime. Because the proper
 - [1.0.5.6](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.5.6)
 1. Fixed issue with connecting only for Current device instead of connecting directly by the device ID
 2. Updated sample for testing bluetooth.getAvailability and bluetooth.getDevices.
+
+- [1.0.6.0](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.6.0)
+
+1. Fixed reading Characteristic properties.
+2. Add support for net8. 
+3. Changed RequestDeviceQuery to RequestDeviceOptions
+4. Added all the options due to official docs, but not tested as have no possibility, also the question for services and identifiers, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
 
 ## Additionaly
 

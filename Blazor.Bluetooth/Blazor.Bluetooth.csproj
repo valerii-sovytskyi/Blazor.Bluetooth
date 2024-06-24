@@ -8,10 +8,12 @@
     <RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
     <PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
     <PackageReleaseNotes>
-      1. Fixed issue with connecting only for Current device instead of connecting directly by the device ID
-      2. Updated sample for testing bluetooth.getAvailability and bluetooth.getDevices.
+      1. Fixed reading Characteristic properties.
+      2. Add support for net8.
+      3. Changed RequestDeviceQuery to RequestDeviceOptions
+      4. Added all the options due to official docs, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
     </PackageReleaseNotes>
-    <Version>1.0.5.6</Version>
+    <Version>1.0.6.0</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,24 +21,24 @@
 
   <!--  NET 5  -->
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" Condition="'$(TargetFramework)' == 'net5.0'" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
   <!--  NET 6  -->
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
 
-	<!--  NET 8  -->
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.3" Condition="'$(TargetFramework)' == 'net8.0'" />
-		<PackageReference Include="System.Net.Http.Json" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-	</ItemGroup>
+  <!--  NET 8  -->
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6" />
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\BlazorBluetooth.png">

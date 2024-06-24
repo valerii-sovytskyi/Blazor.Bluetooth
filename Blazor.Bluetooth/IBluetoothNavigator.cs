@@ -31,7 +31,7 @@ namespace Blazor.Bluetooth
         Task<bool> GetAvailability();
 
         /// <summary>
-        /// Returns a list of <see cref="Device"/> which the origin already obtained permission for via a call to <see cref="RequestDevice(RequestDeviceQuery)"/>.
+        /// Returns a list of <see cref="Device"/> which the origin already obtained permission for via a call to <see cref="RequestDevice(RequestDeviceOptions)"/>.
         /// </summary>
         /// <returns>Task with a list of devices result.</returns>
         /// <exception cref="ScriptNotFoundException">JSInteropt is not found, check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html for Client App, or in _Host.cshtml (.net5) /  _Layout.cshtml (.net6) for Server App.</exception>
@@ -42,12 +42,22 @@ namespace Blazor.Bluetooth
         /// <summary>
         /// Request from the user a device. If there is no chooser UI, this method returns the first device matching the criteria.
         /// </summary>
-        /// <param name="query">A filter query.</param>
+        /// <param name="options">Options.</param>
         /// <returns>Task with a device result.</returns>
         /// <exception cref="ScriptNotFoundException">JSInteropt is not found, check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html for Client App, or in _Host.cshtml (.net5) /  _Layout.cshtml (.net6) for Server App.</exception>
         /// <exception cref="BluetoothNotSupportedException">Bluetooth probably is not supported on your browser. Please check browser compatibility https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth#browser_compatibility.</exception>
         /// <exception cref="RequestDeviceCancelledException">Exception thrown in case user cancel connecting to the device.</exception>
         /// <exception cref="Exception">Exception, other not handled exceptions.</exception>
-        Task<IDevice> RequestDevice(RequestDeviceQuery query);
+        Task<IDevice> RequestDevice(RequestDeviceOptions options);
+
+        /// <summary>
+        /// Request from the user a device. If there is no chooser UI, this method returns the first device matching the criteria.
+        /// </summary>
+        /// <returns>Task with a device result.</returns>
+        /// <exception cref="ScriptNotFoundException">JSInteropt is not found, check if you added <script src=\"_content/Blazor.Bluetooth/JSInterop.js\"></script> in your wwwrooot/index.html for Client App, or in _Host.cshtml (.net5) /  _Layout.cshtml (.net6) for Server App.</exception>
+        /// <exception cref="BluetoothNotSupportedException">Bluetooth probably is not supported on your browser. Please check browser compatibility https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth#browser_compatibility.</exception>
+        /// <exception cref="RequestDeviceCancelledException">Exception thrown in case user cancel connecting to the device.</exception>
+        /// <exception cref="Exception">Exception, other not handled exceptions.</exception>
+        Task<IDevice> RequestDevice();
     }
 }
