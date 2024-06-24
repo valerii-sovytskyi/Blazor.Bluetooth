@@ -260,7 +260,7 @@ window.ble.descriptorWriteValue = async (deviceId, serviceId, characteristicId, 
 
 // Bluetooth
 
-function convertDevice(device) {
+function convertDeviceToInternal(device) {
     return {
         "InternalName": device.name,
         "InternalId": device.id,
@@ -272,7 +272,7 @@ function convertDevice(device) {
 }
 
 window.ble.getDeviceById = (deviceId) => {
-    return convertDevice(getPairedBluetoothDeviceById(deviceId));
+    return convertDeviceToInternal(getPairedBluetoothDeviceById(deviceId));
 }
 
 window.ble.connectDevice = async (deviceId) => {
@@ -280,7 +280,7 @@ window.ble.connectDevice = async (deviceId) => {
 
     if (device !== null) {
         await device.gatt.connect();
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
     else {
         return null;
@@ -292,7 +292,7 @@ window.ble.disconnectDevice = async (deviceId) => {
 
     if (device !== null) {
         await device.gatt.disconnect();
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
     else {
         return null;
@@ -306,7 +306,7 @@ window.ble.referringDevice = () => {
         throw 'Referring device is not supporting';
     }
     else {
-        return convertDevice(device);
+        return convertDeviceToInternal(device);
     }
 }
 
@@ -349,7 +349,7 @@ window.ble.getDevices = async () => {
             PairedBluetoothDevices.push(device);
         });
 
-        return devices.map(x => convertDevice(x));
+        return devices.map(x => convertDeviceToInternal(x));
     }
 }
 
