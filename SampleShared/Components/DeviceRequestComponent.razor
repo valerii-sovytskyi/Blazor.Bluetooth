@@ -1,0 +1,39 @@
+﻿@inherits BindableBase
+
+<div class="form-group" style="background: #FDEDEC;">
+
+    <div class="form-group">
+        <label>
+            Allow all devices:
+        </label>
+        <input type="checkbox" @bind-value:event="onchange" @bind-value="AllowAllDevices" />
+    </div>
+
+    @if (!AllowAllDevices)
+    {
+        <div>
+            <div class="form-group">
+                <label>
+                    Device name:
+                </label>
+                <input type="text" class="form-control" @bind-value:event="onchange" @bind-value="DeviceName" />
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Device name prefix:
+                </label>
+                <input type="text" class="form-control" @bind-value:event="onchange" @bind-value="DeviceNamePrefix" />
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Service UUID:
+                </label>
+                <input type="text" class="form-control" @bind-value:event="onchange" @bind-value="ServiceUuid" />
+            </div>
+        </div>
+    }
+
+    <button class="btn btn-success" disabled="@IsBusy" onclick="@RequestDevice" type="button">Request Device</button>
+</div>

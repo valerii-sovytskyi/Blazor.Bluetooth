@@ -1,0 +1,56 @@
+﻿@inherits BindableBase
+
+<div class="form-group" style="background: #FEF9E7;">
+    @if (AdvertisementsFeatureDissabled)
+    {
+        <p>Please make sure to enable "Web BLE new permissions backend" feature for bluetooth to have advertisements!</p>
+        <p>(Copy ref to search field)</p>
+        <p>about:flags/#enable-web-bluetooth-new-permissions-backend</p>
+    }
+
+    @if (BluetoothAdvertisingEvent != null)
+    {
+        <h4>Advertisement:</h4>
+        <p>Apperience:       @BluetoothAdvertisingEvent.Appearance</p>
+        <p>Device:           @BluetoothAdvertisingEvent.Device</p>
+        <p>ManufacturerData: </p>
+        @if (@BluetoothAdvertisingEvent.ManufacturerData != null)
+        {
+            @foreach (var item in BluetoothAdvertisingEvent.ManufacturerData)
+            {
+                <p> - Key: @item.Key, Value: @item.Value</p>
+            }
+        }
+
+        <p>Name:             @BluetoothAdvertisingEvent.Name</p>
+        <p>Rssi:             @BluetoothAdvertisingEvent.Rssi</p>
+        <p>Service_data:</p>
+        @if (BluetoothAdvertisingEvent.ServiceData != null)
+        {
+            @foreach (var item in BluetoothAdvertisingEvent.ServiceData)
+            {
+                <p> - Key: @item.Key, Value: @item.Value</p>
+            }
+        }
+        <p>Tx_power:         @BluetoothAdvertisingEvent.TxPower</p>
+        <p>UUIDs:</p>
+        @if (BluetoothAdvertisingEvent.Uuids != null)
+        {
+            @foreach (var item in BluetoothAdvertisingEvent.Uuids)
+            {
+                <p> - item</p>
+            }
+        }
+    }
+    else if (AdvertisementsReceiveActivated)
+    {
+        <p>Advertisements scanning....</p>
+    }
+    
+    @if (!AdvertisementsReceiveActivated)
+    {
+        <div class="form-group">
+            <button type="button" class="btn btn-outline-secondary" onclick="@StartReceivingAdvertisements">Start watching advertisements</button>
+        </div>
+    }
+</div>

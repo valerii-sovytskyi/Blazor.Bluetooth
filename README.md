@@ -97,6 +97,11 @@ _Why? It means you will check if device connected on runtime. Because the proper
 1. Fixed issue with connecting only for Current device instead of connecting directly by the device ID
 2. Updated sample for testing bluetooth.getAvailability and bluetooth.getDevices.
 
+- [1.0.6.0](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.6.0)
+
+1. Fixed reading Characteristic properties.
+2. Add support for net8. 
+
 ## Additionaly
 
 - Some features are working only with Experimental feature activated, for example input this reference into your browser (chrome/edge) **about:flags/#enable-web-bluetooth-new-permissions-backend** and enable it. Or more general option **about:flags/#enable-experimental-web-platform-features**.

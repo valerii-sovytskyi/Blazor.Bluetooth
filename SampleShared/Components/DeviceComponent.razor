@@ -1,0 +1,134 @@
+﻿@inherits BindableBase
+
+@if (Device != null)
+{
+    <div class="form-group" style="background: #EAFAF1;">
+
+        <AdvComponent Device="Device" Logs="Logs" />
+
+        <div class="form-group">
+            <p><b>Device info:</b></p>
+            <p>Name: @Device.Name</p>
+            <p>Id: @Device.Id</p>
+            <p>Gatt.DeviceUuid: @Device.Gatt.DeviceUuid</p>
+            <p>Gatt.Connected: @Device.Gatt.Connected</p>
+
+        </div>
+
+        @if (Device.Gatt.Connected)
+        {
+            <div class="form-group" style="background: #E8DAEF;">
+                <label>
+                    <b>Input Service UUID:</b>
+                    <input type="text" @bind-value="ServiceUUID" @bind-value:event="oninput" />
+                </label>
+                <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetServiceByUUIDClicked">Get Service by UUID</button>
+                <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetServicesByUUIDClicked">Get Services by UUID</button>
+
+                @if (Services.Any())
+                {
+                    @foreach (var service in Services)
+                    {
+                        <div class="form-group">
+                            <p><b>Properties: </b></p>
+                            <p>DeviceUuid: @service.DeviceUuid</p>
+                            <p>IsPrimary: @service.IsPrimary</p>
+                            <p>Uuid: @service.Uuid</p>
+                            <p><b>Methods: </b></p>
+                            <label>
+                                <b>Input Characteristic UUID:</b>
+                                <input type="text" @bind-value="CharacteristicUUID" @bind-value:event="oninput" />
+                            </label>
+                            <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@(() => OnGetCharacteristicByUUIDClicked(service))">Get Characteristic by UUID</button>
+                            <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@(() => OnGetCharacteristicsByUUIDClicked(service))">Get Characteristics by UUID</button>
+
+                            @if (Characteristics.Any())
+                            {
+                                @foreach (var characteristic in Characteristics)
+                                {
+                                    <div class="form-group" style="background: #F4ECF7;">
+                                        <p><b>Properties: </b></p>
+                                        <p>Value: @characteristic.Value</p>
+                                        <p>DeviceUuid: @characteristic.DeviceUuid</p>
+                                        <p>ServiceUuid: @characteristic.ServiceUuid</p>
+                                        <p>Uuid: @characteristic.Uuid</p>
+                                        <p><b>Properties:</b></p>
+                                        <p>AuthenticatedSignedWrites: @characteristic.Properties.AuthenticatedSignedWrites</p>
+                                        <p>Broadcast: @characteristic.Properties.Broadcast</p>
+                                        <p>Indicate: @characteristic.Properties.Indicate</p>
+                                        <p>Notify: @characteristic.Properties.Notify</p>
+                                        <p>Read: @characteristic.Properties.Read</p>
+                                        <p>ReliableWrite: @characteristic.Properties.ReliableWrite</p>
+                                        <p>WritableAuxiliaries: @characteristic.Properties.WritableAuxiliaries</p>
+                                        <p>Write: @characteristic.Properties.Write</p>
+                                        <p>WriteWithoutResponse: @characteristic.Properties.WriteWithoutResponse</p>
+                                        <p><b>Methods: </b></p>
+                                        <label>
+                                            <b>Input Decriptor UUID:</b>
+                                            <input type="text" @bind-value="DescriptorUUID" @bind-value:event="oninput" />
+                                        </label>
+                                        <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@(() => OnGetDescriptorByUUIDClicked(characteristic))">Get Descriptor by UUID</button>
+                                        <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@(() => OnGetDescriptorsByUUIDClicked(characteristic))">Get Descriptors by UUID</button>
+                                        <p>Should be readValue</p>
+                                        <p>Should be writeValue(ArrayBuffer value)</p>
+                                        <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
+                                        <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
+                                        <p>Should be startNotifications()</p>
+                                        <p>Should be stopNotifications()</p>
+                                        <p>Should be characteristicvaluechanged with result</p>
+                                    </div>
+
+                                    @if (Descriptors.Any())
+                                    {
+                                        @foreach (var descriptor in Descriptors)
+                                        {
+                                            <div class="form-group" style="background: #FAE5D3;">
+                                                <p><b>Properties: </b></p>
+                                                <p>Value: @descriptor.Value</p>
+                                                <p>CharacteristicUuid: @descriptor.CharacteristicUuid</p>
+                                                <p>DeviceUuid: @descriptor.DeviceUuid</p>
+                                                <p>ServiceUuid: @descriptor.ServiceUuid</p>
+                                                <p>Uuid: @descriptor.Uuid</p>
+                                                <p><b>Methods: </b></p>
+                                                <p>Should be readValue</p>
+                                                <p>Should be writeValue(ArrayBuffer value)</p>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No desciptors here.</p>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <p>No characteristics here.</p>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No services here.</p>
+                }
+            </div>
+        }
+
+        <div class="form-group">
+            <p>
+
+                @if (!Device.Gatt.Connected)
+                {
+                    <button class="btn btn-outline-success" disabled="@IsBusy" onclick="@ConnectDevice" type="button">Connect</button>
+                }
+                else
+                {
+                    <button class="btn btn-outline-danger" disabled="@IsBusy" type="button" onclick="@DisconnectDevice">Disconnect the device</button>
+                }
+
+                <button class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@UpdateIsConnected" type="button">Update Connected state</button>
+            </p>
+        </div>
+    </div>
+}
