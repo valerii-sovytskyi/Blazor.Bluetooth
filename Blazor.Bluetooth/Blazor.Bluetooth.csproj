@@ -10,6 +10,8 @@
     <PackageReleaseNotes>
       1. Fixed reading Characteristic properties.
       2. Add support for net8.
+      3. Changed RequestDeviceQuery to RequestDeviceOptions
+      4. Added all the options due to official docs, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
     </PackageReleaseNotes>
     <Version>1.0.6.0</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>

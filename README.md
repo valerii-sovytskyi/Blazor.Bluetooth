@@ -34,6 +34,8 @@ var options = new RequestDeviceOptions { AcceptAllDevices = true };
 var device = await BluetoothNavigator.RequestDevice(options);
 ```
 
+_Note: see full info about requests here [Request Device Options](https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options)_
+
 ### Connect/Disconnect to the device
 
 Connect to the device.
@@ -102,6 +104,7 @@ _Why? It means you will check if device connected on runtime. Because the proper
 1. Fixed reading Characteristic properties.
 2. Add support for net8. 
 3. Changed RequestDeviceQuery to RequestDeviceOptions
+4. Added all the options due to official docs, but not tested as have no possibility, also the question for services and identifiers, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
 
 ## Additionaly
 
