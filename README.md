@@ -27,11 +27,11 @@ First of all you can check if user's browser support Bluetooth connection by cal
 
 ### Request a device
 
-Create a **RequestDeviceQuery** with all the options you would like to get a device. But note that it's important if **AcceptAllDevices** is **true**, then do not set **Filters**, other ways you have to fill **Filters**.
+Create a **RequestDeviceOptions** with all the options you would like to get a device. But note that it's important if **AcceptAllDevices** is **true**, then do not set **Filters**, other ways you have to fill **Filters**.
 
 ```
-var query = new RequestDeviceQuery { AcceptAllDevices = true };
-var device = await BluetoothNavigator.RequestDevice(query);
+var options = new RequestDeviceOptions { AcceptAllDevices = true };
+var device = await BluetoothNavigator.RequestDevice(options);
 ```
 
 ### Connect/Disconnect to the device
@@ -101,6 +101,7 @@ _Why? It means you will check if device connected on runtime. Because the proper
 
 1. Fixed reading Characteristic properties.
 2. Add support for net8. 
+3. Changed RequestDeviceQuery to RequestDeviceOptions
 
 ## Additionaly
 

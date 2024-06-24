@@ -8,26 +8,7 @@ public partial class DeviceRequestComponent : BindableBase
     [Inject]
     public IBluetoothNavigator BluetoothNavigator { get; set; }
 
-    private string _deviceName;
-    public string DeviceName
-    {
-        get => _deviceName;
-        set => SetProperty(ref _deviceName, value);
-    }
-
-    private string _deviceNamePrefix;
-    public string DeviceNamePrefix
-    {
-        get => _deviceNamePrefix;
-        set => SetProperty(ref _deviceNamePrefix, value);
-    }
-    
-    private bool _allowAllDevices;
-    public bool AllowAllDevices
-    {
-        get => _allowAllDevices;
-        set => SetProperty(ref _allowAllDevices, value);
-    }
+    #region Filter
 
     private string _serviceUuid;
     public string ServiceUuid
@@ -36,6 +17,15 @@ public partial class DeviceRequestComponent : BindableBase
         set => SetProperty(ref _serviceUuid, value);
     }
     
+    #endregion
+
+    private bool _addFilter;
+    public bool AddFilter
+    {
+        get => _addFilter;
+        set => SetProperty(ref _addFilter, value);
+    }
+
     [Parameter]
     public ObservableCollection<string> Logs { get; set; }
 
@@ -49,6 +39,8 @@ public partial class DeviceRequestComponent : BindableBase
         set => SetProperty(ref _isBusy, value);
     }
 
+    public RequestDeviceOptions Options = new RequestDeviceOptions();
+
     public async Task RequestDevice()
     {
         IsBusy = true;
@@ -61,33 +53,16 @@ public partial class DeviceRequestComponent : BindableBase
                 Logs.Add("The BLE is not available on your browser");
             }
 
-            var query = new RequestDeviceQuery
+            IDevice device;
+            if (AddFilter)
             {
-                AcceptAllDevices = AllowAllDevices
-            };
-
-            if (!AllowAllDevices)
+                device = await BluetoothNavigator.RequestDevice(Options);
+            }
+            else
             {
-                query.Filters = new List<Filter>
-                {
-                    new Filter
-                    {
-                        Name = string.IsNullOrWhiteSpace(DeviceName)
-                            ? null
-                            : DeviceName,
-                        NamePrefix = string.IsNullOrWhiteSpace(DeviceNamePrefix)
-                            ? null
-                            : DeviceNamePrefix,
-                    }
-                };
+                device = await BluetoothNavigator.RequestDevice();
             }
 
-            if (!string.IsNullOrEmpty(ServiceUuid))
-            {
-                query.OptionalServices.Add(ServiceUuid);
-            }
-
-            var device = await BluetoothNavigator.RequestDevice(query);
 
             OnDeviceReceived.Invoke(this, device);
         }
@@ -97,5 +72,76 @@ public partial class DeviceRequestComponent : BindableBase
         }
 
         IsBusy = false;
+    }
+
+    private void AddNewFilter()
+    {
+        if (Options.Filters is null)
+        {
+            Options.Filters = new List<Filter>();
+        }
+
+        Options.Filters.Add(new Filter());
+        StateHasChanged();
+    }
+
+    private void RemoveFilter(Filter filter)
+    {
+        Options.Filters.Remove(filter);
+
+        if (Options.Filters.Count == 0)
+        {
+            Options.Filters = null;
+        }
+        StateHasChanged();
+    }
+
+    private void AddManufacturerData(Filter filter)
+    {
+        if (filter.ManufacturerData is null)
+        {
+            filter.ManufacturerData = new List<ManufacturerData>();
+        }
+
+        filter.ManufacturerData.Add(new ManufacturerData());
+        StateHasChanged();
+    }
+    
+    private void RemoveManufacturerData(Filter filter, ManufacturerData manufacturerData)
+    {
+        filter.ManufacturerData.Remove(manufacturerData);
+        if (filter.ManufacturerData.Count == 0)
+        {
+            filter.ManufacturerData = null;
+        }
+
+        StateHasChanged();
+    }
+    
+    private void AddService(Filter filter)
+    {
+        if (filter.Services is null)
+        {
+            filter.Services = new List<string>();
+        }
+
+        filter.Services.Add(string.Empty);
+        StateHasChanged();
+    }
+    
+    private void RemoveService(Filter filter, int index)
+    {
+        filter.Services.RemoveAt(index);
+        if (filter.Services.Count == 0)
+        {
+            filter.Services = null;
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnServiceTextChanged(Filter filter, int serviceIndex, object arg)
+    {
+        filter.Services[serviceIndex] = arg.ToString();
     }
 }

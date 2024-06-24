@@ -310,9 +310,27 @@ window.ble.referringDevice = () => {
     }
 }
 
-window.ble.requestDevice = async (query) => {
-    var objquery = JSON.parse(query);
-    var device = await navigator.bluetooth.requestDevice(objquery);
+window.ble.requestDevice = async (options) => {
+    var objOptions = JSON.parse(options);
+    var device = await navigator.bluetooth.requestDevice(objOptions);
+
+    var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
+    if (alreadyPariedDevice != null) {
+        var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
+        PairedBluetoothDevices.splice(indexToRemove, 1);
+    }
+
+    PairedBluetoothDevices.push(device);
+
+    if (device !== null) {
+        console.log('> Bluetooth Device selected.');
+    }
+
+    return window.ble.getDeviceById(device.id);
+}
+
+window.ble.requestDevice = async () => {
+    var device = await navigator.bluetooth.requestDevice();
 
     var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
     if (alreadyPariedDevice != null) {

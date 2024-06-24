@@ -5,16 +5,16 @@ using System.Collections.Generic;
 namespace Blazor.Bluetooth
 {
     /// <summary>
-    /// Request device query for <see cref="IBluetoothNavigator.RequestDevice(RequestDeviceQuery)"/>.
+    /// Request device options for <see cref="IBluetoothNavigator.RequestDevice(RequestDeviceOptions)"/>.
     /// </summary>
     [Serializable]
-    public class RequestDeviceQuery
+    public class RequestDeviceOptions
     {
         /// <summary>
         /// Gets or sets a filters.
         /// </summary>
         [JsonPropertyName("filters")]
-        public List<Filter> Filters { get; set; }
+        public List<Filter>? Filters { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a list of BluetoothServiceUUIDs
@@ -23,21 +23,14 @@ namespace Blazor.Bluetooth
         /// The identifiers take the same values as the elements of the services array (a GATT service name, service UUID, or UUID short 16-bit or 32-bit form).
         /// </summary>
         [JsonPropertyName("optionalServices")]
-        public List<string> OptionalServices { get; set; } = null;
+        public List<string>? OptionalServices { get; set; } = null;
         
         /// <summary>
-        /// Gets or sets a string of hex numbers, write them through the comma and without brakes.
-        ///
-        /// The data is not used for filtering the devices,
-        /// but advertisements that match the specified set are still delivered in advertisementreceived events.
-        /// This is useful because it allows code to specify an interest in data received
-        /// from Bluetooth devices without constraining the filter controlling
-        /// which devices are presented to the user in the permission prompt.
+        /// Gets or sets a Manufacturer data.
+        /// An array of objects matching against manufacturer data in the Bluetooth Low Energy (BLE) advertising packets.
         /// </summary>
-        /// <example>0x0CFD, 0x0B07, 0x0A29</example>
-        /// <remarks>Use this link to see full lists of company numbers https://www.bluetooth.com/specifications/assigned-numbers/.</remarks>
         [JsonPropertyName("optionalManufacturerData")]
-        public List<int> OptionalManufacturerData { get; set; } = null;
+        public List<ManufacturerData>? OptionalManufacturerData { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a value indicates a boolean value indicating that the requesting script can accept all Bluetooth devices. The default is null.
