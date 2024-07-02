@@ -106,6 +106,10 @@ _Why? It means you will check if device connected on runtime. Because the proper
 3. Changed RequestDeviceQuery to RequestDeviceOptions
 4. Added all the options due to official docs, but not tested as have no possibility, also the question for services and identifiers, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
 
+- [1.0.6.1](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.6.1)
+
+1. Fixed critical issue with JSInterop.
+
 ## Additionaly
 
 - Some features are working only with Experimental feature activated, for example input this reference into your browser (chrome/edge) **about:flags/#enable-web-bluetooth-new-permissions-backend** and enable it. Or more general option **about:flags/#enable-experimental-web-platform-features**.
