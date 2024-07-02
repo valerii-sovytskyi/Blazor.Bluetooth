@@ -53,16 +53,7 @@ public partial class DeviceRequestComponent : BindableBase
                 Logs.Add("The BLE is not available on your browser");
             }
 
-            IDevice device;
-            if (AddFilter)
-            {
-                device = await BluetoothNavigator.RequestDevice(Options);
-            }
-            else
-            {
-                device = await BluetoothNavigator.RequestDevice();
-            }
-
+            var device = await BluetoothNavigator.RequestDevice(Options);
 
             OnDeviceReceived.Invoke(this, device);
         }

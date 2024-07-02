@@ -8,12 +8,9 @@
     <RepositoryUrl>https://github.com/valerii-sovytskyi/Blazor.Bluetooth</RepositoryUrl>
     <PackageTags>Blazor.Bluetooth, Blazor, Bluetooth, Web, API, BluetoothWeb, BluetoothAPI, BluetoothBlazor, BlazorBluetooth</PackageTags>
     <PackageReleaseNotes>
-      1. Fixed reading Characteristic properties.
-      2. Add support for net8.
-      3. Changed RequestDeviceQuery to RequestDeviceOptions
-      4. Added all the options due to official docs, full info is here https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice#options.
+      1. Fixed critical issue with JSInterop.
     </PackageReleaseNotes>
-    <Version>1.0.6.0</Version>
+    <Version>1.0.6.1</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>

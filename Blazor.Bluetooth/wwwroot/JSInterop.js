@@ -329,24 +329,6 @@ window.ble.requestDevice = async (options) => {
     return window.ble.getDeviceById(device.id);
 }
 
-window.ble.requestDevice = async () => {
-    var device = await navigator.bluetooth.requestDevice();
-
-    var alreadyPariedDevice = getPairedBluetoothDeviceById(device.id);
-    if (alreadyPariedDevice != null) {
-        var indexToRemove = PairedBluetoothDevices.findIndex(x => x.id == device.id);
-        PairedBluetoothDevices.splice(indexToRemove, 1);
-    }
-
-    PairedBluetoothDevices.push(device);
-
-    if (device !== null) {
-        console.log('> Bluetooth Device selected.');
-    }
-
-    return window.ble.getDeviceById(device.id);
-}
-
 window.ble.getAvailability = async () => {
     return await navigator.bluetooth.getAvailability();
 }
