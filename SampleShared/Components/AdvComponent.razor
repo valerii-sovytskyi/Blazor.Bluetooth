@@ -23,6 +23,9 @@
     {
         <h4>Advertisement:</h4>
         <p>Apperience:       @BluetoothAdvertisingEvent.Appearance</p>
+        <p>Name:             @BluetoothAdvertisingEvent.Name</p>
+        <p>Rssi:             @BluetoothAdvertisingEvent.Rssi</p>
+        <p>Tx_power:         @BluetoothAdvertisingEvent.TxPower</p>
         <p>ManufacturerData: </p>
         @if (BluetoothAdvertisingEvent.ManufacturerData != null)
         {
@@ -31,10 +34,7 @@
                 <p> - Key: @item.Key, Value: @item.Value</p>
             }
         }
-
-        <p>Name:             @BluetoothAdvertisingEvent.Name</p>
-        <p>Rssi:             @BluetoothAdvertisingEvent.Rssi</p>
-        <p>Service_data:</p>
+        <p>ServiceData:</p>
         @if (BluetoothAdvertisingEvent.ServiceData != null)
         {
             @foreach (var item in BluetoothAdvertisingEvent.ServiceData)
@@ -42,7 +42,6 @@
                 <p> - Key: @item.Key, Value: @item.Value</p>
             }
         }
-        <p>Tx_power:         @BluetoothAdvertisingEvent.TxPower</p>
         <p>UUIDs:</p>
         @if (BluetoothAdvertisingEvent.Uuids != null)
         {
