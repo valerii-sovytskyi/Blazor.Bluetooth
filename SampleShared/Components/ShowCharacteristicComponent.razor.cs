@@ -20,6 +20,13 @@ public partial class ShowCharacteristicComponent : BindableBase
         get => _readRead;
         set => SetProperty(ref _readRead, value);
     }
+    
+    private byte[] _readWrite;
+    public byte[] ValueWrite
+    {
+        get => _readWrite;
+        set => SetProperty(ref _readWrite, value);
+    }
 
     private bool _isBusy;
     public bool IsBusy
@@ -148,6 +155,43 @@ public partial class ShowCharacteristicComponent : BindableBase
             var value = await Characteristic.ReadValue();
             ValueRead = string.Join(" ", value);
 
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+
+    private async Task WriteValue()
+    {
+        try
+        {
+            await Characteristic.WriteValue(ValueWrite);
+
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+
+    private async Task WriteValueWithoutResponse()
+    {
+        try
+        {
+            await Characteristic.WriteValueWithoutResponse(ValueWrite);
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+    
+    private async Task WriteValueWithResponse()
+    {
+        try
+        {
+            await Characteristic.WriteValueWithResponse(ValueWrite);
         }
         catch (Exception e)
         {

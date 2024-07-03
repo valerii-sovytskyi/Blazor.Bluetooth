@@ -33,17 +33,23 @@
 
             @if (Characteristic.Properties.Write)
             {
-                <p>Should be writeValue(ArrayBuffer value)</p>
-            }
+                <label>
+                    Write byte array:
+                    <InputTextToByteArrayComponent @bind-Value="ValueWrite" />
+                </label>
+                <br />
+                <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@WriteValueWithResponse">WriteValueWithResponse</button>
+                <br />
 
-            @if (Characteristic.Properties.Write)
-            {
-                <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
-            }
+                @if (Characteristic.Properties.WriteWithoutResponse)
+                {
+                    <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@WriteValueWithoutResponse">WriteValueWithoutResponse</button>
+                    <br />
+                }
 
-            @if (Characteristic.Properties.WriteWithoutResponse)
-            {
-                <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
+                <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@WriteValue">WriteValue</button>
+                <p>(p.s. Do not use it as it's obsolete, use WriteWithoutResponse instead)</p>
+                <br />
             }
 
             @if (Characteristic.Properties.Notify)

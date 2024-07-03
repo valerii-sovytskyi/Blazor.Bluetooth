@@ -10,6 +10,15 @@
     <br/>
 
     <p><b>Methods: </b></p>
-    <p>Should be readValue</p>
-    <p>Should be writeValue(ArrayBuffer value)</p>
+    <p>Value: @ValueRead</p>
+    <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@ReadValue">ReadValue</button>
+    <br />
+    <label>
+        Write byte array:
+        <InputTextToByteArrayComponent @bind-Value="ValueWrite" />
+    </label>
+    <br />
+    <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@WriteValue">WriteValueWithResponse</button>
+    <br />
+
 </div>
