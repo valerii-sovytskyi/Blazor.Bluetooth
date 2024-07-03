@@ -1,0 +1,7 @@
+﻿<div>
+    <input type="text" @bind-value:event="oninput" @bind-value="StringValue" />
+    @if (!IsTextValid)
+    {
+        <p class="text-danger">Byte array is invalid format, input bytes with a space separation, with values 0-255, for ex "12 53 124 255 0"</p>
+    }
+</div>
