@@ -1,6 +1,12 @@
 ﻿@inherits BindableBase
 
 <div class="container text-start">
+    
+    <div class="row">
+        <BluetoothUuidsComponent Logs="@Logs"></BluetoothUuidsComponent>
+        <br />
+    </div>
+
     <div class="row">
 
         <div class="col">
@@ -13,10 +19,10 @@
             </div>
 
             <div class="form-group">
-                <DeviceRequestComponent Logs="Logs" OnDeviceReceived="OnDeviceReceived" />
+                <DeviceRequestComponent Logs="Logs" OnDeviceReceived="OnDeviceReceived"/>
             </div>
-            
-            <br />
+
+            <br/>
 
             <div class="form-group">
 
@@ -26,7 +32,7 @@
                     {
                         <div class="form-group" style="background: #E8F6F3;">
                             <button class="btn btn-outline-danger justify-content-end" onclick="@(() => RemoveDevice(device))" disabled="@IsBusy" type="button">Forgot device</button>
-                            <DeviceComponent Device="device" Logs="Logs" />
+                            <DeviceComponent Device="device" Logs="Logs"/>
                         </div>
                     }
                 }

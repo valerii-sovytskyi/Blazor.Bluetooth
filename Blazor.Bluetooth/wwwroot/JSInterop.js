@@ -1,5 +1,29 @@
 ﻿window.ble = {};
 
+// BluetoothUUID
+
+window.ble.bluetoothUUIDGetService = (name) => {
+    let result = BluetoothUUID.getService(name);
+    return result;
+}
+
+window.ble.bluetoothUUIDGetCharacteristic = (name) => {
+    let result = BluetoothUUID.getCharacteristic(name);
+    return result;
+}
+
+window.ble.bluetoothUUIDGetDescriptor = (name) => {
+    let result = BluetoothUUID.getDescriptor(name);
+    return result;
+}
+
+window.ble.bluetoothUUIDCanonicalUUID = (alias) => {
+    let result = BluetoothUUID.canonicalUUID(alias);
+    return result;
+}
+
+// End BluetoothUUID
+
 // Helpers
 
 var PairedBluetoothDevices = [];

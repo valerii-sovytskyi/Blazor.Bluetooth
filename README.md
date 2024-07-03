@@ -113,6 +113,9 @@ _Why? It means you will check if device connected on runtime. Because the proper
 - [1.0.6.2](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.6.2)
 
 1. Added Forgot function for Bluetooth Device.
+2. Fixed Advertisements manufacturer data, service data, tx power properties.
+3. Upgraded advertisenets handlers to handle advertisent per device, not we can handle multiple advertisements for multiple device.
+4. Added BluetoothUUID to get UUID for service/characteristic/descriptor/canonical.
 
 ## Additionaly
 

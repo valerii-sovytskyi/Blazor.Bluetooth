@@ -1,0 +1,21 @@
+﻿@inherits BindableBase
+
+<div class="form-group" style="background: #FDEDEC;">
+    <div class="form-group">
+        <label>
+            Set UUID Name
+            <input type="text" @bind-value:event="onchange" @bind-value="Name" />
+        </label>
+        
+        <p><b>UUID is: @UUID</b></p>
+
+    </div>
+    <div class="form-group">
+
+        <button class="btn btn-outline-success" onclick="@SetGetService" type="button">Get service UUID</button>
+        <button class="btn btn-outline-success" onclick="@SetGetCharacteristic" type="button">Get Characteristic UUID</button>
+        <button class="btn btn-outline-success" onclick="@SetGetDescriptor" type="button">Get Descriptor UUID</button>
+        <button class="btn btn-outline-success" onclick="@SetGetCanonical" type="button">Get Canonical UUID</button>
+
+    </div>
+</div>
