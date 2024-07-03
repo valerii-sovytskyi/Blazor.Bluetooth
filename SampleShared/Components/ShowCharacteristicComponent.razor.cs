@@ -14,6 +14,13 @@ public partial class ShowCharacteristicComponent : BindableBase
         set => SetProperty(ref _descriptorUUID, value);
     }
     
+    private string _readRead;
+    public string ValueRead
+    {
+        get => _readRead;
+        set => SetProperty(ref _readRead, value);
+    }
+
     private bool _isBusy;
     public bool IsBusy
     {
@@ -132,5 +139,19 @@ public partial class ShowCharacteristicComponent : BindableBase
         var value = string.Join(" ", e.Value);
         NotificationValue = value;
         Console.WriteLine(value);
+    }
+
+    private async Task ReadValue()
+    {
+        try
+        {
+            var value = await Characteristic.ReadValue();
+            ValueRead = string.Join(" ", value);
+
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
     }
 }

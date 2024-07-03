@@ -19,25 +19,47 @@
             <p>WritableAuxiliaries: @Characteristic.Properties.WritableAuxiliaries</p>
             <p>Write: @Characteristic.Properties.Write</p>
             <p>WriteWithoutResponse: @Characteristic.Properties.WriteWithoutResponse</p>
-            <p>Notify: @Characteristic.Properties.Notify (means StartNotification is supported or not!)</p>
+            <p>Notify: @Characteristic.Properties.Notify</p>
             <br />
         </div>
         <div class="form-group">
             <p><b>Methods: </b></p>
-            <p>Should be readValue</p>
-            <p>Should be writeValue(ArrayBuffer value)</p>
-            <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
-            <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
-            @if (IsNotificationStarted)
+
+            @if (Characteristic.Properties.Read)
             {
-                <p>Notification value: @NotificationValue</p>
-                <button type="button" class="btn btn-outline-warning" disabled="@IsBusy" onclick="@StopNotification">Stop Notification</button>
+                <p>Value: @ValueRead</p>
+                <button type="button" class="btn btn-outline-primary" disabled="@IsBusy" onclick="@ReadValue">ReadValue</button>
             }
-            else
+
+            @if (Characteristic.Properties.Write)
             {
-                <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@StartNotification">Start Notification</button>
+                <p>Should be writeValue(ArrayBuffer value)</p>
             }
-            <br/>
+
+            @if (Characteristic.Properties.Write)
+            {
+                <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
+            }
+
+            @if (Characteristic.Properties.WriteWithoutResponse)
+            {
+                <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
+            }
+
+            @if (Characteristic.Properties.Notify)
+            {
+                @if (IsNotificationStarted)
+                {
+                    <p>Notification value: @NotificationValue</p>
+                    <button type="button" class="btn btn-outline-warning" disabled="@IsBusy" onclick="@StopNotification">Stop Notification</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@StartNotification">Start Notification</button>
+                }
+            }
+            <br />
+
             <label>
                 <b>Input Decriptor UUID:</b>
                 <input type="text" @bind-value="DescriptorUUID" @bind-value:event="oninput" />
