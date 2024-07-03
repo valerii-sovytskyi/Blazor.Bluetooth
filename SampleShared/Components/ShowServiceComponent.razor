@@ -1,0 +1,27 @@
+﻿@inherits BindableBase
+
+<div class="form-group">
+    <p><b>Properties: </b></p>
+    <p>DeviceUuid: @Service.DeviceUuid</p>
+    <p>IsPrimary: @Service.IsPrimary</p>
+    <p>Uuid: @Service.Uuid</p>
+    <p><b>Methods: </b></p>
+    <label>
+        <b>Input Characteristic UUID:</b>
+        <input type="text" @bind-value="CharacteristicUUID" @bind-value:event="oninput" />
+    </label>
+    <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetCharacteristicByUUIDClicked">Get Characteristic by UUID</button>
+    <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetCharacteristicsByUUIDClicked">Get Characteristics by UUID</button>
+
+    @if (Characteristics.Any())
+    {
+        @foreach (var characteristic in Characteristics)
+        {
+            <ShowCharacteristicComponent Characteristic="characteristic" Logs="Logs" />
+        }
+    }
+    else
+    {
+        <p>No characteristics here.</p>
+    }
+</div>

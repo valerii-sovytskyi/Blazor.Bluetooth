@@ -8,10 +8,6 @@ public partial class DeviceRequestComponent : BindableBase
     [Inject]
     public IBluetoothNavigator BluetoothNavigator { get; set; }
 
-    #region Filter
-
-    #endregion
-
     private bool _addFilter;
     public bool AddFilter
     {
@@ -50,16 +46,11 @@ public partial class DeviceRequestComponent : BindableBase
 
             OnDeviceReceived.Invoke(this, device);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Logs.Add($"Exception: {ex.Message}");
         }
 
         IsBusy = false;
-    }
-
-    private void OnServiceTextChanged(Filter filter, int serviceIndex, object arg)
-    {
-        filter.Services[serviceIndex] = arg.ToString();
     }
 }

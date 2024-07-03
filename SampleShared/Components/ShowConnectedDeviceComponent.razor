@@ -1,0 +1,22 @@
+﻿@inherits BindableBase
+
+<div class="form-group" style="background: #E8DAEF;">
+    <label>
+        <b>Input Service UUID:</b>
+        <input type="text" @bind-value="ServiceUUID" @bind-value:event="oninput" />
+    </label>
+    <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetServiceByUUIDClicked">Get Service by UUID</button>
+    <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetServicesByUUIDClicked">Get Services by UUID</button>
+
+    @if (Services.Any())
+    {
+        @foreach (var service in Services)
+        {
+            <ShowServiceComponent Logs="Logs" Service="service" />
+        }
+    }
+    else
+    {
+        <p>No services here.</p>
+    }
+</div>
