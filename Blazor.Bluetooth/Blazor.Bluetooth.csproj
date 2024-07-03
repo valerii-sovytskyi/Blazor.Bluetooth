@@ -12,6 +12,8 @@
       2. Fixed Advertisements manufacturer data, service data, tx power properties.
       3. Upgraded advertisenets handlers to handle advertisent per device, not we can handle multiple advertisements for multiple device.
       4. Added BluetoothUUID to get UUID for service/characteristic/descriptor/canonical.
+      5. Add GetCharacteristics without UUID parameter for Service.
+      6. Add StartNotifications to handle for many characteristics.
     </PackageReleaseNotes>
     <Version>1.0.6.2</Version>
     <PackageIcon>BlazorBluetoothUA.png</PackageIcon>

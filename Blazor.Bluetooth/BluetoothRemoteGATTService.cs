@@ -38,12 +38,25 @@ namespace Blazor.Bluetooth
                 throw new Exception(ex.Message);
             }
         }
-
+        
         public async Task<List<IBluetoothRemoteGATTCharacteristic>> GetCharacteristics(string uuid)
         {
             try
             {
                 var characteristics = await BluetoothNavigator.JsRuntime.InvokeAsync<List<BluetoothRemoteGATTCharacteristic>>("ble.getCharacteristics", Uuid, uuid, DeviceUuid);
+                return characteristics.Select(x => (IBluetoothRemoteGATTCharacteristic)x).ToList();
+            }
+            catch (JSException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        
+        public async Task<List<IBluetoothRemoteGATTCharacteristic>> GetCharacteristics()
+        {
+            try
+            {
+                var characteristics = await BluetoothNavigator.JsRuntime.InvokeAsync<List<BluetoothRemoteGATTCharacteristic>>("ble.getCharacteristicsWithoutUUID", Uuid, DeviceUuid);
                 return characteristics.Select(x => (IBluetoothRemoteGATTCharacteristic)x).ToList();
             }
             catch (JSException ex)

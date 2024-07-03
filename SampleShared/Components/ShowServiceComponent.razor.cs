@@ -29,14 +29,12 @@ public partial class ShowServiceComponent : BindableBase
     
     public async Task OnGetCharacteristicByUUIDClicked()
     {
-        if (string.IsNullOrEmpty(CharacteristicUUID))
-        {
-            return;
-        }
+        Characteristics.Clear();
 
         try
         {
             var characteristic = await Service.GetCharacteristic(CharacteristicUUID);
+
             var existing = Characteristics.FirstOrDefault(x => x.Uuid == CharacteristicUUID);
             if (existing != null)
             {
@@ -53,14 +51,41 @@ public partial class ShowServiceComponent : BindableBase
 
     public async Task OnGetCharacteristicsByUUIDClicked()
     {
-        if (string.IsNullOrEmpty(CharacteristicUUID))
-        {
-            return;
-        }
+        Characteristics.Clear();
 
         try
         {
             var characteristics = await Service.GetCharacteristics(CharacteristicUUID);
+
+            var existing = Characteristics.Where(x => x.Uuid == CharacteristicUUID);
+            if (existing != null)
+            {
+                foreach (var item in existing)
+                {
+                    Characteristics.Remove(item);
+                }
+            }
+
+            foreach (var characteristic in characteristics)
+            {
+                Characteristics.Add(characteristic);
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+
+    public async Task OnGetCharacteristicsClicked()
+    {
+        
+        Characteristics.Clear();
+
+        try
+        {
+            var characteristics = await Service.GetCharacteristics();
+
             var existing = Characteristics.Where(x => x.Uuid == CharacteristicUUID);
             if (existing != null)
             {

@@ -21,22 +21,38 @@ public partial class ShowCharacteristicComponent : BindableBase
         set => SetProperty(ref _isBusy, value);
     }
     
+    private bool _isNotificationStarted;
+    public bool IsNotificationStarted
+    {
+        get => _isNotificationStarted;
+        set => SetProperty(ref _isNotificationStarted, value);
+    }
+    
+    private string _notificationValue;
+    public string NotificationValue
+    {
+        get => _notificationValue;
+        set => SetProperty(ref _notificationValue, value);
+    }
+    
     [Parameter]
     public IBluetoothRemoteGATTCharacteristic Characteristic { get; set; }
 
     [Parameter]
     public ObservableCollection<string> Logs { get; set; }
 
-    public async Task OnGetDescriptorByUUIDClicked(IBluetoothRemoteGATTCharacteristic characteristic)
+    public async Task OnGetDescriptorByUUIDClicked()
     {
         if (string.IsNullOrEmpty(DescriptorUUID))
         {
             return;
         }
+        
+        Descriptors.Clear();
 
         try
         {
-            var descriptor = await characteristic.GetDescriptor(DescriptorUUID);
+            var descriptor = await Characteristic.GetDescriptor(DescriptorUUID);
             var existing = Descriptors.FirstOrDefault(x => x.Uuid == DescriptorUUID);
             if (existing != null)
             {
@@ -51,16 +67,18 @@ public partial class ShowCharacteristicComponent : BindableBase
         }
     }
 
-    public async Task OnGetDescriptorsByUUIDClicked(IBluetoothRemoteGATTCharacteristic characteristic)
+    public async Task OnGetDescriptorsByUUIDClicked()
     {
         if (string.IsNullOrEmpty(DescriptorUUID))
         {
             return;
         }
 
+        Descriptors.Clear();
+
         try
         {
-            var descriptors = await characteristic.GetDescriptors(DescriptorUUID);
+            var descriptors = await Characteristic.GetDescriptors(DescriptorUUID);
             var existing = Descriptors.Where(x => x.Uuid == DescriptorUUID);
             if (existing != null)
             {
@@ -79,5 +97,40 @@ public partial class ShowCharacteristicComponent : BindableBase
         {
             Logs.Add(e.Message);
         }
+    }
+
+    public async Task StartNotification()
+    {
+        try
+        {
+            await Characteristic.StartNotifications();
+            Characteristic.OnRaiseCharacteristicValueChanged += CharacteristicOnOnRaiseCharacteristicValueChanged;
+            IsNotificationStarted = true;
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+
+    public async Task StopNotification()
+    {
+        try
+        {
+            await Characteristic.StopNotifications();
+            Characteristic.OnRaiseCharacteristicValueChanged -= CharacteristicOnOnRaiseCharacteristicValueChanged;
+            IsNotificationStarted = false;
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.Message);
+        }
+    }
+
+    private void CharacteristicOnOnRaiseCharacteristicValueChanged(object? sender, CharacteristicEventArgs e)
+    {
+        var value = string.Join(" ", e.Value);
+        NotificationValue = value;
+        Console.WriteLine(value);
     }
 }

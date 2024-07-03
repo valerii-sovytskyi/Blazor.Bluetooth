@@ -1,46 +1,61 @@
 ﻿@inherits BindableBase
 
 
-<div class="form-group" style="background: #F4ECF7;">
-    <p><b>Properties: </b></p>
-    <p>Value: @Characteristic.Value</p>
-    <p>DeviceUuid: @Characteristic.DeviceUuid</p>
-    <p>ServiceUuid: @Characteristic.ServiceUuid</p>
-    <p>Uuid: @Characteristic.Uuid</p>
-    <p><b>Properties:</b></p>
-    <p>AuthenticatedSignedWrites: @Characteristic.Properties.AuthenticatedSignedWrites</p>
-    <p>Broadcast: @Characteristic.Properties.Broadcast</p>
-    <p>Indicate: @Characteristic.Properties.Indicate</p>
-    <p>Notify: @Characteristic.Properties.Notify</p>
-    <p>Read: @Characteristic.Properties.Read</p>
-    <p>ReliableWrite: @Characteristic.Properties.ReliableWrite</p>
-    <p>WritableAuxiliaries: @Characteristic.Properties.WritableAuxiliaries</p>
-    <p>Write: @Characteristic.Properties.Write</p>
-    <p>WriteWithoutResponse: @Characteristic.Properties.WriteWithoutResponse</p>
-    <p><b>Methods: </b></p>
-    <label>
-        <b>Input Decriptor UUID:</b>
-        <input type="text" @bind-value="DescriptorUUID" @bind-value:event="oninput" />
-    </label>
-    <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@(() => OnGetDescriptorByUUIDClicked(Characteristic))">Get Descriptor by UUID</button>
-    <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@(() => OnGetDescriptorsByUUIDClicked(Characteristic))">Get Descriptors by UUID</button>
-    <p>Should be readValue</p>
-    <p>Should be writeValue(ArrayBuffer value)</p>
-    <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
-    <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
-    <p>Should be startNotifications()</p>
-    <p>Should be stopNotifications()</p>
-    <p>Should be characteristicvaluechanged with result</p>
-</div>
+<div class="form-group">
+    <br />
+    <div class="form-group" style="background: #F4ECF7;">
 
-@if (Descriptors.Any())
-{
-    @foreach (var descriptor in Descriptors)
-    {
-        <ShowDescriptorComponent Logs="Logs" Descriptor="descriptor" />
-    }
-}
-else
-{
-    <p>No desciptors here.</p>
-}
+        <div class="form-group">
+            <p><b>Properties: </b></p>
+            <p>Value: @Characteristic.Value</p>
+            <p>DeviceUuid: @Characteristic.DeviceUuid</p>
+            <p>ServiceUuid: @Characteristic.ServiceUuid</p>
+            <p>Uuid: @Characteristic.Uuid</p>
+            <p>AuthenticatedSignedWrites: @Characteristic.Properties.AuthenticatedSignedWrites</p>
+            <p>Broadcast: @Characteristic.Properties.Broadcast</p>
+            <p>Indicate: @Characteristic.Properties.Indicate</p>
+            <p>Read: @Characteristic.Properties.Read</p>
+            <p>ReliableWrite: @Characteristic.Properties.ReliableWrite</p>
+            <p>WritableAuxiliaries: @Characteristic.Properties.WritableAuxiliaries</p>
+            <p>Write: @Characteristic.Properties.Write</p>
+            <p>WriteWithoutResponse: @Characteristic.Properties.WriteWithoutResponse</p>
+            <p>Notify: @Characteristic.Properties.Notify (means StartNotification is supported or not!)</p>
+            <br />
+        </div>
+        <div class="form-group">
+            <p><b>Methods: </b></p>
+            <p>Should be readValue</p>
+            <p>Should be writeValue(ArrayBuffer value)</p>
+            <p>Should be writeValueWithResponse(ArrayBuffer value)</p>
+            <p>Should be writeValueWithoutResponse(ArrayBuffer value)</p>
+            @if (IsNotificationStarted)
+            {
+                <p>Notification value: @NotificationValue</p>
+                <button type="button" class="btn btn-outline-warning" disabled="@IsBusy" onclick="@StopNotification">Stop Notification</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@StartNotification">Start Notification</button>
+            }
+            <br/>
+            <label>
+                <b>Input Decriptor UUID:</b>
+                <input type="text" @bind-value="DescriptorUUID" @bind-value:event="oninput" />
+            </label>
+            <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@OnGetDescriptorByUUIDClicked">Get Descriptor by UUID</button>
+            <button type="button" class="btn btn-outline-secondary" disabled="@IsBusy" onclick="@OnGetDescriptorsByUUIDClicked">Get Descriptors by UUID</button>
+            @if (Descriptors.Any())
+            {
+                @foreach (var descriptor in Descriptors)
+                {
+                    <ShowDescriptorComponent Logs="Logs" Descriptor="descriptor" />
+                }
+            }
+            else
+            {
+                <p>No desciptors here.</p>
+            }
+            <br />
+        </div>
+    </div>
+</div>

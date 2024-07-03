@@ -10,6 +10,7 @@
         <b>Input Characteristic UUID:</b>
         <input type="text" @bind-value="CharacteristicUUID" @bind-value:event="oninput" />
     </label>
+    <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetCharacteristicsClicked">Get Characteristics</button>
     <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetCharacteristicByUUIDClicked">Get Characteristic by UUID</button>
     <button class="btn btn-outline-secondary" disabled="@IsBusy" type="button" onclick="@OnGetCharacteristicsByUUIDClicked">Get Characteristics by UUID</button>
 

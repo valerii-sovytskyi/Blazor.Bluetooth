@@ -29,12 +29,18 @@ namespace Blazor.Bluetooth
         /// <param name="uuid">The UUID of a characteristic, for example '00002a37-0000-1000-8000-00805f9b34fb' for the Heart Rate Measurement characteristic.</param>
         /// <returns>Task with <see cref="IBluetoothCharacteristicProperties"/> result.</returns>
         Task<IBluetoothRemoteGATTCharacteristic> GetCharacteristic(string uuid);
-
+        
         /// <summary>
         /// Returns a list of BluetoothRemoteGATTCharacteristic instances for a given universally unique identifier (UUID).
         /// </summary>
         /// <param name="uuid">The UUID of a characteristic, for example '00002a37-0000-1000-8000-00805f9b34fb' for the Heart Rate Measurement characteristic.</param>
         /// <returns>Task with list of <see cref="IBluetoothRemoteGATTCharacteristic"/> result.</returns>
         Task<List<IBluetoothRemoteGATTCharacteristic>> GetCharacteristics(string uuid);
+        
+        /// <summary>
+        /// Returns a list of BluetoothRemoteGATTCharacteristic instances for a given universally unique identifier (UUID).
+        /// </summary>
+        /// <returns>Task with list of <see cref="IBluetoothRemoteGATTCharacteristic"/> result.</returns>
+        Task<List<IBluetoothRemoteGATTCharacteristic>> GetCharacteristics();
     }
 }

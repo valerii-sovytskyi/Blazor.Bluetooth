@@ -68,7 +68,7 @@ window.ble.setAdvertisementReceivedHandler = (handler, deviceId) => {
 
     var addedHandler = advertisementsHandlers.find(x => x.deviceId == deviceId);
     if (addedHandler != null) {
-        
+
         // Remove previous handler for specific device.
         advertisementsHandlers =
             advertisementsHandlers.filter(item => item.deviceId != addedHandler.deviceId);
@@ -170,6 +170,13 @@ window.ble.getCharacteristics = async (serviceId, characteristicId, deviceId) =>
     return characteristics.map(x => convertCharacteristicToInternal(x, deviceId, serviceId));
 }
 
+window.ble.getCharacteristicsWithoutUUID = async (serviceId, deviceId) => {
+    var device = getPairedBluetoothDeviceById(deviceId);
+    var service = await device.gatt.getPrimaryService(serviceId);
+    var characteristics = await service.getCharacteristics();
+    return characteristics.map(x => convertCharacteristicToInternal(x, deviceId, serviceId));
+}
+
 // End Characteristic
 
 
@@ -223,22 +230,54 @@ window.ble.stopNotification = async (deviceId, serviceId, characteristicId) => {
 
 // Characteristic value changed
 
-var CharacteristicValueHandler = [];
+var characteristicValueHandlers = [];
 
-window.ble.setCharacteristicValueChangedHandler = (characteristicValueHandler) => {
+window.ble.setCharacteristicValueChangedHandler = (handler, deviceId, serviceId, characteristicId) => {
 
-    CharacteristicValueHandler = characteristicValueHandler;
+    var addedHandler = characteristicValueHandlers.find(
+        x => x.deviceId == deviceId
+        && x.serviceId == serviceId
+        && x.characteristicId == characteristicId);
+
+    if (addedHandler != null) {
+
+        // Remove previous handler for specific device.
+        characteristicValueHandlers =
+            characteristicValueHandlers.filter(
+                x => x.deviceId != addedHandler.deviceId
+                || x.serviceId != addedHandler.serviceId
+                || x.characteristicId != addedHandler.characteristicId);
+    }
+
+    if (handler != null) {
+
+        // Add new handler for specific device.
+        characteristicValueHandlers.push({
+            handler: handler,
+            deviceId: deviceId,
+            serviceId: serviceId,
+            characteristicId: characteristicId
+        });
+    }
 }
 
 async function handleCharacteristicValueChanged(event) {
+    
+    var target = event.target;
+    // get handler for specific device.
+    var handler = characteristicValueHandlers.find(
+        x => x.deviceId == target.service.device.id
+        && x.serviceId == target.service.uuid
+        && x.characteristicId == target.uuid);
+    if (handler != null) {
 
-    var value = event.target.value;
+        var value = target.value;
 
-    var uint8Array = new Uint8Array(value.buffer);
+        var uint8Array = new Uint8Array(value.buffer);
 
-    var array = Array.from(uint8Array)
-    console.log(JSON.stringify(array));
-    await CharacteristicValueHandler.invokeMethodAsync('HandleCharacteristicValueChanged', event.target.service.uuid, event.target.uuid, array);
+        var array = Array.from(uint8Array)
+        await handler.handler.invokeMethodAsync('HandleCharacteristicValueChanged', event.target.service.uuid, event.target.uuid, array);
+    }
 }
 
 // End Characteristic value changed
