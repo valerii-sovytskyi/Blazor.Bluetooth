@@ -32,8 +32,17 @@ public partial class BleTesterPageComponent : BindableBase
             await device.Gatt.Disonnect();
         }
 
-        Devices.Remove(device);
-        StateHasChanged();
+        try
+        {
+            await device.Forget();
+            
+            Devices.Remove(device);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logs.Add(e.ToString());
+        }
     }
 
     public async Task OnGetDeviceClicked()

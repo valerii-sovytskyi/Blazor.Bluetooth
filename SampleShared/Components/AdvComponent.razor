@@ -8,12 +8,23 @@
         <p>about:flags/#enable-web-bluetooth-new-permissions-backend</p>
     }
 
+    <div class="form-group">
+        @if (!AdvertisementsReceiveActivated)
+        {
+            <button type="button" class="btn btn-outline-secondary" onclick="@StartReceivingAdvertisements">Start watching advertisements</button>
+        }
+        else
+        {
+            <p>Advertisements scanning....</p>
+        }
+    </div>
+
     @if (BluetoothAdvertisingEvent != null)
     {
         <h4>Advertisement:</h4>
         <p>Apperience:       @BluetoothAdvertisingEvent.Appearance</p>
         <p>ManufacturerData: </p>
-        @if (@BluetoothAdvertisingEvent.ManufacturerData != null)
+        @if (BluetoothAdvertisingEvent.ManufacturerData != null)
         {
             @foreach (var item in BluetoothAdvertisingEvent.ManufacturerData)
             {
@@ -40,16 +51,5 @@
                 <p> - item</p>
             }
         }
-    }
-    else if (AdvertisementsReceiveActivated)
-    {
-        <p>Advertisements scanning....</p>
-    }
-    
-    @if (!AdvertisementsReceiveActivated)
-    {
-        <div class="form-group">
-            <button type="button" class="btn btn-outline-secondary" onclick="@StartReceivingAdvertisements">Start watching advertisements</button>
-        </div>
     }
 </div>

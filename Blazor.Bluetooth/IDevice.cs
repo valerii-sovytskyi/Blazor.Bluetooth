@@ -36,5 +36,10 @@ namespace Blazor.Bluetooth
         /// </summary>
         /// <exception cref="AdvertisementsUnavailableException">Will throw in case of Experimental mode inactive.</exception>
         Task WatchAdvertisements();
+
+        /// <summary>
+        /// Provides a way for the page to revoke access to a device the user has granted access to.
+        /// </summary>
+        Task Forget();
     }
 }

@@ -50,6 +50,8 @@ namespace Blazor.Bluetooth
             {
                 BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setCharacteristicValueChangedHandler", null);
 
+                _characteristicValueHandler?.Dispose();
+                _characteristicValueHandler = null;
                 _onRaiseCharacteristicValueChanged -= value;
             }
         }

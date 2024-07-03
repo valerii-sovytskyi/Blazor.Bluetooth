@@ -32,29 +32,21 @@ namespace Blazor.Bluetooth
         {
             add
             {
-                // INFO: this should be covered in Task.Run,
-                // because script not found on Blazor Server App, if you run JsRuntime.InvokeVoidAsync directly.
-                // for Blazor Client App both ways work.
-                // ISSUE: https://github.com/valerii-sovytskyi/Blazor.Bluetooth/issues/1
-                Task.Run(async () =>
+                if (BluetoothAvailabilityHandler is null)
                 {
-                    if (BluetoothAvailabilityHandler is null)
-                    {
-                        BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
-                    }
+                    BluetoothAvailabilityHandler = DotNetObjectReference.Create(new BluetoothAvailabilityHandler(this));
+                }
 
-                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
-                });
+                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", BluetoothAvailabilityHandler);
 
                 _onAvailabilityChanged += value;
             }
             remove
             {
-                Task.Run(async () =>
-                {
-                    await JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
-                });
+                JsRuntime.InvokeVoidAsync("ble.addBluetoothAvailabilityHandler", null);
 
+                BluetoothAvailabilityHandler?.Dispose();
+                BluetoothAvailabilityHandler = null;
                 _onAvailabilityChanged -= value;
             }
         }
@@ -140,7 +132,7 @@ namespace Blazor.Bluetooth
                 throw new Exception(ex.Message);
             }
         }
-        
+
         public async Task<IDevice> RequestDevice(RequestDeviceOptions options)
         {
             var jsonOptions = new JsonSerializerOptions
@@ -161,7 +153,7 @@ namespace Blazor.Bluetooth
                 {
                     throw new ScriptNotFoundException(ex);
                 }
-                
+
                 if (ex.Message.Contains("navigator.bluetooth is undefined"))
                 {
                     throw new BluetoothNotSupportedException(ex);

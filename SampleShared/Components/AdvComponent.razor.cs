@@ -33,9 +33,12 @@ public partial class AdvComponent : BindableBase
         get => _device;
         set
         {
-            _advertisementsReceiveActivated = false;
-            _advertisementsFeatureDissabled = false;
-            _device = value;
+            if (_device != value)
+            {
+                _advertisementsReceiveActivated = false;
+                _advertisementsFeatureDissabled = false;
+                _device = value;
+            }
         }
     }
     
@@ -57,10 +60,9 @@ public partial class AdvComponent : BindableBase
         }
     }
     
-    
     private void Device_OnAdvertisementReceived(IBluetoothAdvertisingEvent bluetoothAdvertisingEvent)
     {
+        Logs.Add("Add received at " + DateTime.Now.ToString("hh:mm:ss"));
         BluetoothAdvertisingEvent = bluetoothAdvertisingEvent;
-        Device.OnAdvertisementReceived -= Device_OnAdvertisementReceived;
     }
 }

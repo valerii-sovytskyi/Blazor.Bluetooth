@@ -52,6 +52,8 @@ namespace Blazor.Bluetooth
             {
                 BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.addDeviceDisconnectionHandler", null, Id);
 
+                DeviceDisconnectHandler?.Dispose();
+                DeviceDisconnectHandler = null;
                 _onGattServerDisconnected -= value;
             }
         }
@@ -74,6 +76,8 @@ namespace Blazor.Bluetooth
             {
                 BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.setAdvertisementReceivedHandler", null, Id);
 
+                AdvertisementReceivedHandler?.Dispose();
+                AdvertisementReceivedHandler = null;
                 _onAdvertisementReceived -= value;
             }
         }
@@ -90,7 +94,24 @@ namespace Blazor.Bluetooth
             }
             catch (JSException ex)
             {
-                if (ex.Message.Contains("watchAdvertisements is not a function"))
+                if (ex.Message.Contains("is not a function"))
+                {
+                    throw new AdvertisementsUnavailableException(ex);
+                }
+
+                throw new Exception(ex.Message);
+            }
+        }
+        
+        public async Task Forget()
+        {
+            try
+            {
+                await BluetoothNavigator.JsRuntime.InvokeVoidAsync("ble.forget", InternalId);
+            }
+            catch (JSException ex)
+            {
+                if (ex.Message.Contains("is not a function"))
                 {
                     throw new AdvertisementsUnavailableException(ex);
                 }

@@ -29,20 +29,35 @@ function convertBluetoothAdvertisingEventToInternal(event) {
     return {
         "InternalAppearance": event.appearance,
         "InternalDevice": event.device,
-        "InternalManufacturerData": event.manufacturer_data,
+        "InternalManufacturerData": event.manufacturerData,
         "InternalName": event.name,
         "InternalRssi": event.rssi,
-        "InternalServiceData": event.service_data,
-        "InternalTxPower": event.tx_power,
+        "InternalServiceData": event.serviceData,
+        "InternalTxPower": event.txPower,
         "InternalUuids": event.uuids,
     }
 }
 
-var AdvertisementReceivedHandler = [];
+var advertisementsHandlers = [];
 
-window.ble.setAdvertisementReceivedHandler = (advertisementReceivedHandler) => {
+window.ble.setAdvertisementReceivedHandler = (handler, deviceId) => {
 
-    AdvertisementReceivedHandler = advertisementReceivedHandler;
+    var addedHandler = advertisementsHandlers.find(x => x.deviceId == deviceId);
+    if (addedHandler != null) {
+        
+        // Remove previous handler for specific device.
+        advertisementsHandlers =
+            advertisementsHandlers.filter(item => item.deviceId != addedHandler.deviceId);
+    }
+
+    if (handler != null) {
+
+        // Add new handler for specific device.
+        advertisementsHandlers.push({
+            handler: handler,
+            deviceId: deviceId
+        });
+    }
 }
 
 window.ble.watchAdvertisements = async (deviceId) => {
@@ -54,10 +69,18 @@ window.ble.watchAdvertisements = async (deviceId) => {
 }
 
 async function handleAdvertisementReceived(event) {
-    if (AdvertisementReceivedHandler != null) {
+
+    // get handler for specific device.
+    var handler = advertisementsHandlers.find(x => x.deviceId == event.device.id);
+    if (handler != null) {
         var convertedEvent = convertBluetoothAdvertisingEventToInternal(event);
-        await AdvertisementReceivedHandler.invokeMethodAsync('HandleAdvertisementReceived', convertedEvent);
+        await handler.handler.invokeMethodAsync('HandleAdvertisementReceived', convertedEvent);
     }
+}
+
+window.ble.forget = async (deviceId) => {
+    var device = getPairedBluetoothDeviceById(deviceId);
+    device.forget();
 }
 
 // End Device

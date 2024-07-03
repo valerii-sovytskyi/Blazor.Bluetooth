@@ -110,6 +110,10 @@ _Why? It means you will check if device connected on runtime. Because the proper
 
 1. Fixed critical issue with JSInterop.
 
+- [1.0.6.2](https://www.nuget.org/packages/Blazor.Bluetooth/1.0.6.2)
+
+1. Added Forgot function for Bluetooth Device.
+
 ## Additionaly
 
 - Some features are working only with Experimental feature activated, for example input this reference into your browser (chrome/edge) **about:flags/#enable-web-bluetooth-new-permissions-backend** and enable it. Or more general option **about:flags/#enable-experimental-web-platform-features**.

@@ -12,16 +12,20 @@
 
             </div>
 
-            <DeviceRequestComponent Logs="Logs" OnDeviceReceived="OnDeviceReceived" />
+            <div class="form-group">
+                <DeviceRequestComponent Logs="Logs" OnDeviceReceived="OnDeviceReceived" />
+            </div>
+            
+            <br />
 
-            <div class="form-group" style="background: #E8F6F3;">
+            <div class="form-group">
 
                 @if (Devices.Any())
                 {
                     @foreach (var device in Devices)
                     {
-                        <div class="form-group">
-                            <button class="btn btn-outline-danger justify-content-end" onclick="@(() => RemoveDevice(device))" disabled="@IsBusy" type="button">X</button>
+                        <div class="form-group" style="background: #E8F6F3;">
+                            <button class="btn btn-outline-danger justify-content-end" onclick="@(() => RemoveDevice(device))" disabled="@IsBusy" type="button">Forgot device</button>
                             <DeviceComponent Device="device" Logs="Logs" />
                         </div>
                     }
