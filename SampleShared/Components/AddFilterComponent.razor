@@ -1,0 +1,45 @@
+﻿@inherits BindableBase
+
+
+<div class="form-group" style="background: #FEF5E7;">
+    <button class="btn btn-outline-success" onclick="@(() => AddNewFilter())" type="button">Add filter</button>
+    @if (Filters != null)
+    {
+        @foreach (var filter in Filters)
+        {
+            var thisFilter = filter;
+            <div class="form-group">
+                <button class="btn btn-outline-danger" onclick="@(() => RemoveFilter(thisFilter))" type="button">Remove filter</button>
+
+                <div>
+                    <label>
+                        Name
+                        <input type="text" @bind-value:event="onchange" @bind-value="thisFilter.Name" />
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        NamePrefix
+                        <input type="text" @bind-value:event="onchange" @bind-value="thisFilter.NamePrefix" />
+                    </label>
+                </div>
+
+                <!--  Services -->
+
+                <div class="form-group">
+                    <p><b>Services</b></p>
+                    <AddServicesComponent SetRef="x => thisFilter.Services = x" />
+                </div>
+
+                <!--  Manufacturer data -->
+
+                <div class="form-group">
+                    <p><b>ManufacturerData</b></p>
+                    <AddManufacturerDataComponent SetRef="x => thisFilter.ManufacturerData = x" />
+                </div>
+
+            </div>
+        }
+    }
+</div>

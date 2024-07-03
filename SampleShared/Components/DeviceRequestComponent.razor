@@ -19,166 +19,40 @@
             <input type="checkbox" @bind-value:event="onchange" @bind-value="Options.AcceptAllDevices" />
         </div>
 
+        <br />
+
+        <!--  Filters -->
 
         <div class="form-group">
-            <button class="btn btn-outline-success" onclick="@(() => AddNewFilter())" type="button">Add filter</button>
-            @if (Options.Filters != null)
-            {
-                @foreach (var filter in Options.Filters)
-                {
-                    Filter thisFilter = filter;
-                    <div class="form-group">
-                        <button class="btn btn-outline-danger" onclick="@(() => RemoveFilter(thisFilter))" type="button">Remove filter</button>
-
-                        <div>
-                            <label>
-                                Name
-                                <input type="text" @bind-value:event="onchange" @bind-value="thisFilter.Name" />
-                            </label>
-                        </div>
-
-                        <div>
-                            <label>
-                                NamePrefix
-                                <input type="text" @bind-value:event="onchange" @bind-value="thisFilter.NamePrefix" />
-                            </label>
-                        </div>
-                        
-                        <!-- Services -->
-
-                        <div class="form-group" style="background: #F5EEF8;">
-                            <p>Services: </p>
-                            <button class="btn btn-outline-success" onclick="@(() => AddService(thisFilter))" type="button">Add Service</button>
-
-                            @if (thisFilter.Services != null)
-                            {
-                                @for (var i = 0; i < thisFilter.Services.Count; i++)
-                                {
-                                    var localI = i;
-                                    <div>
-                                        <button class="btn btn-outline-danger" onclick="@(() => RemoveService(thisFilter, localI))" type="button">Remove Service</button>
-
-                                        <label>
-                                            Service:
-                                            <input type="text" value="@thisFilter.Services[localI]" @oninput="arg => OnServiceTextChanged(thisFilter, localI, arg)" />
-                                        </label>
-                                    </div>
-                                }
-                            }
-                        </div>
-                        
-                        <!-- Manufacturer data -->
-
-                        <div class="form-group" style="background: #FEF5E7;">
-                            <p>ManufacturerData: </p>
-                            <button class="btn btn-outline-success" onclick="@(() => AddManufacturerData(thisFilter))" type="button">Add Manufacturer data</button>
-
-                            @if (thisFilter.ManufacturerData != null)
-                            {
-                                @foreach (var manufacturerData in thisFilter.ManufacturerData)
-                                {
-                                    ManufacturerData thisManData = manufacturerData;
-                                    <div class="form-group">
-                                        <button class="btn btn-outline-danger" onclick="@(() => RemoveManufacturerData(thisFilter, thisManData))" type="button">Remove ManufactureData</button>
-
-                                        <div class="form-group">
-                                            <label>
-                                                CompanyIdentifier:
-                                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.CompanyIdentifier" />
-                                            </label>
-                                        </div>
-                                        <!--
-                                        <div class="form-group">
-                                            <label>
-                                                DataPrefix: (NOT IMPLEMENTED)
-                                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.DataPrefix" />
-                                            </label>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>
-                                                Mask: (NOT IMPLEMENTED)
-                                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.Mask" />
-                                            </label>
-                                        </div> -->
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                }
-            }
+            <p><b>Filters</b></p>
+            <AddFilterComponent SetRef="x => Options.Filters = x"/>
         </div>
 
-        <!--  Optional Manufacturer data -->
+        <br />
 
-        <div class="form-group" style="background: #FEF5E7;">
-            <p>OptionalManufacturerData: </p>
-            <button class="btn btn-outline-success" onclick="@(() => AddManufacturerData())" type="button">Add Optional Manufacturer data</button>
+        <!--  Exclusive filters -->
 
-            @if (Options.OptionalManufacturerData != null)
-            {
-                @foreach (var manufacturerData in Options.OptionalManufacturerData)
-                {
-                    ManufacturerData thisManData = manufacturerData;
-                    <div class="form-group">
-                        <button class="btn btn-outline-danger" onclick="@(() => RemoveManufacturerData(thisManData))" type="button">Remove ManufactureData</button>
-
-                        <div class="form-group">
-                            <label>
-                                CompanyIdentifier:
-                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.CompanyIdentifier" />
-                            </label>
-                        </div>
-                        <!--
-                        <div class="form-group">
-                            <label>
-                                DataPrefix: (NOT IMPLEMENTED)
-                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.DataPrefix" />
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Mask: (NOT IMPLEMENTED)
-                                <input type="number" @bind-value:event="onchange" @bind-value="thisManData.Mask" />
-                            </label>
-                        </div> -->
-                    </div>
-                }
-            }
+        <div class="form-group">
+            <p><b>Exclusive Filters</b></p>
+            <AddFilterComponent SetRef="x => Options.ExclusionFilters = x" />
         </div>
+
+        <br />
 
         <!--  Optional Services -->
 
-        <div class="form-group" style="background: #F5EEF8;">
-            <p>OptionalServices: </p>
-            <button class="btn btn-outline-success" onclick="@(() => AddService())" type="button">Add Optional Service</button>
-
-            @if (Options.OptionalServices != null)
-            {
-                @for (var i = 0; i < Options.OptionalServices.Count; i++)
-                {
-                    var localI = i;
-                    <div>
-                        <button class="btn btn-outline-danger" onclick="@(() => RemoveService(localI))" type="button">Remove Service</button>
-
-                        <label>
-                            Service:
-                            <input type="text" value="@Options.OptionalServices[localI]" @oninput="arg => OnServiceTextChanged(localI, arg)" />
-                        </label>
-                    </div>
-                }
-            }
+        <div class="form-group">
+            <p><b>Optional Services</b></p>
+            <AddServicesComponent SetRef="x => Options.OptionalServices = x" />
         </div>
 
-        <div>
-            <div class="form-group">
-                <label>
-                    Service UUID:
-                </label>
-                <input type="text" class="form-control" @bind-value:event="onchange" @bind-value="ServiceUuid" />
-            </div>
+        <br />
+
+        <!--  Optional Manufacturer data -->
+
+        <div class="form-group">
+            <p><b>Optional Manufacturer data</b></p>
+            <AddManufacturerDataComponent SetRef="x => Options.OptionalManufacturerData = x" />
         </div>
     }
 

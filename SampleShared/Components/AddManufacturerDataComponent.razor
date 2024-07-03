@@ -1,0 +1,37 @@
+﻿@inherits BindableBase
+
+<div class="form-group" style="background: #FEF5E7;">
+    <button class="btn btn-outline-success" onclick="@(() => AddData())" type="button">Add Manufacturer data</button>
+
+    @if (ManufacturerData != null)
+    {
+        @foreach (var manufacturerData in ManufacturerData)
+        {
+            var thisManData = manufacturerData;
+            <div class="form-group">
+                <button class="btn btn-outline-danger" onclick="@(() => RemoveData(thisManData))" type="button">Remove ManufactureData</button>
+
+                <div class="form-group">
+                    <label>
+                        CompanyIdentifier:
+                        <input type="number" @bind-value:event="onchange" @bind-value="thisManData.CompanyIdentifier" />
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        DataPrefix: (NOT IMPLEMENTED)
+                    <!-- <input type="number" @bind-value:event="onchange" @bind-value="thisManData.DataPrefix" /> -->
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Mask: (NOT IMPLEMENTED)
+                    <!--  <input type="number" @bind-value:event="onchange" @bind-value="thisManData.Mask" /> -->
+                    </label>
+                </div>
+            </div>
+        }
+    }
+</div>

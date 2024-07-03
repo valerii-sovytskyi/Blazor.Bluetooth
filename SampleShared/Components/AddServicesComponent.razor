@@ -1,0 +1,22 @@
+﻿@inherits BindableBase
+
+
+<div class="form-group" style="background: #F5EEF8;">
+    <label>
+        Input Service UUID:
+        <input type="text" @bind-value="ServiceUUID" @bind-value:event="oninput" />
+    </label>
+    <button class="btn btn-outline-success" onclick="@(() => AddService())" type="button">Add Service</button>
+
+    @if (Services != null)
+    {
+        @for (var i = 0; i < Services.Count; i++)
+        {
+            var localI = i;
+            <div>
+                @Services[localI]
+                <button class="btn btn-outline-danger" onclick="@(() => RemoveService(localI))" type="button">X</button>
+            </div>
+        }
+    }
+</div>
