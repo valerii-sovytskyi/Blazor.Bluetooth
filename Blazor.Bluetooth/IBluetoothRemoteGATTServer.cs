@@ -28,7 +28,7 @@ namespace Blazor.Bluetooth
         /// Causes the script execution environment to disconnect from device.
         /// </summary>
         /// <returns>Task.</returns>
-        Task Disonnect();
+        Task Disconnect();
 
         /// <summary>
         /// Returns the primary <see cref="IBluetoothRemoteGATTService"/> offered by the bluetooth device for a specified BluetoothServiceUUID.

@@ -42,7 +42,7 @@ public partial class DeviceComponent : BindableBase
 
         try
         {
-            await Device.Gatt.Disonnect();
+            await Device.Gatt.Disconnect();
             StateHasChanged();
         }
         catch (System.Exception ex)

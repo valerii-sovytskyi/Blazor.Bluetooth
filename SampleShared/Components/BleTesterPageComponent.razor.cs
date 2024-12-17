@@ -29,7 +29,7 @@ public partial class BleTesterPageComponent : BindableBase
     {
         if (device.Gatt.Connected)
         {
-            await device.Gatt.Disonnect();
+            await device.Gatt.Disconnect();
         }
 
         try
