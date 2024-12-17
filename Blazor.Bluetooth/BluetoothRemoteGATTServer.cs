@@ -37,7 +37,7 @@ namespace Blazor.Bluetooth
             }
         }
 
-        public async Task Disonnect()
+        public async Task Disconnect()
         {
             try
             {
